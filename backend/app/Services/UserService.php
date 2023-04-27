@@ -65,25 +65,30 @@ class UserService
         return view('auth.email-verified-success');
     }
 
-//    public function login(array $input)
-//    {
-//        $user = $this->userRepository->getFirstWhere('email', $input['email']);
-//
-//        if (!$user || !Hash::check($input['password'], $user->password))
-//            return response('Credentials incorrect', 401);
-//
-//        if ($input['token'] && (!auth('sanctum')->check() || auth('sanctum')->user()->id != $user->id))
-//            return response('Token invalid', 401);
-//
-//        return new UserResource($user, $input['token']);
-//    }
-//
-//    public function logout(mixed $user)
-//    {
-//        $user->currentAccessToken()->delete();
-//
-//        return response()->json(['message' => 'Logged out']);
-//    }
+    public function login(array $data)
+    {
+        $user = $this->userRepository->getFirstWhere('email', $data['user']);
+        if(!$user)
+            $user = $this->userRepository->getFirstWhere('username', $data['user']);
+
+        if(!$user)
+            return response('The selected email or username is invalid.', 422);
+
+        if (!Hash::check($data['password'], $user->password))
+            return response('Credentials incorrect', 401);
+
+        if ($data['token'] && (!auth('sanctum')->check() || auth('sanctum')->user()->id != $user->id))
+            return response('Token invalid', 401);
+
+        return new UserResource($user, $data['token']);
+    }
+
+    public function logout(mixed $user)
+    {
+        $user->currentAccessToken()->delete();
+
+        return response()->json(['message' => 'Logged out']);
+    }
 //
 //    public function verifyEmail(array $data)
 //    {
