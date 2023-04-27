@@ -19,7 +19,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 // Admin
-Route::prefix('admin')->name('admin.')->group(function () {
+Route::prefix('admin')->name('admin.')->middleware('auth.admin')->group(function () {
     Route::post('ingredients', [\App\Http\Controllers\Admin\IngredientController::class, 'store']);
     Route::post('categories', [\App\Http\Controllers\Admin\CategoryController::class, 'store']);
 });
