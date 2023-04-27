@@ -17,3 +17,9 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+// Admin
+Route::prefix('admin')->name('admin.')->group(function () {
+    Route::post('ingredients', [\App\Http\Controllers\Admin\IngredientController::class, 'store']);
+    Route::post('categories', [\App\Http\Controllers\Admin\CategoryController::class, 'store']);
+});
