@@ -22,4 +22,9 @@ class IngredientController extends Controller
     {
         return $this->adminService->createIngredient(['name' => $request->name]);
     }
+
+    public function index()
+    {
+        return $this->adminService->allIngredients();
+    }
 }

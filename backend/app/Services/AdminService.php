@@ -45,4 +45,9 @@ class AdminService
 
         return new CategoryResource($category);
     }
+
+    public function allIngredients()
+    {
+        return IngredientAdminResource::collection($this->ingredientRepository->all());
+    }
 }

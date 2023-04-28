@@ -18,8 +18,20 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-// Admin
-Route::prefix('admin')->name('admin.')->middleware('auth.admin')->group(function () {
-    Route::post('ingredients', [\App\Http\Controllers\Admin\IngredientController::class, 'store']);
-    Route::post('categories', [\App\Http\Controllers\Admin\CategoryController::class, 'store']);
+////////////
+// Public //
+////////////
+Route::name('public.')->group(function() {
+    // Categories
+    Route::get('categories', [\App\Http\Controllers\CategoryController::class, 'index']);
+    // Ingredients
+    Route::get('ingredients', [\App\Http\Controllers\IngredientController::class, 'index']);
+});
+
+///////////
+// Admin //
+///////////
+Route::prefix('admin')->name('admin.')->middleware(['auth:sanctum', 'verified', 'auth.admin'])->group(function () {
+    Route::apiResource('ingredients', \App\Http\Controllers\Admin\IngredientController::class)->only(['store', 'index']);
+    Route::apiResource('categories', \App\Http\Controllers\Admin\CategoryController::class)->only(['store']);
 });

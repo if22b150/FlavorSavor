@@ -3,8 +3,6 @@
 namespace App\Http\Middleware;
 
 use App\Enums\ERole;
-use App\Repositories\Interfaces\CompanyRepositoryInterface;
-use App\Repositories\Interfaces\CustomerRepositoryInterface;
 use Closure;
 use Illuminate\Http\Request;
 
