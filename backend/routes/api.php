@@ -32,6 +32,7 @@ Route::name('public.')->group(function() {
 // Admin //
 ///////////
 Route::prefix('admin')->name('admin.')->middleware(['auth:sanctum', 'verified', 'auth.admin'])->group(function () {
-    Route::apiResource('ingredients', \App\Http\Controllers\Admin\IngredientController::class)->only(['store', 'index']);
-    Route::apiResource('categories', \App\Http\Controllers\Admin\CategoryController::class)->only(['store']);
+    Route::apiResource('ingredients', \App\Http\Controllers\Admin\IngredientController::class);
+
+    Route::apiResource('categories', \App\Http\Controllers\Admin\CategoryController::class);
 });
