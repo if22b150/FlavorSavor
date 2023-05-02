@@ -26,6 +26,8 @@ Route::name('public.')->group(function() {
     Route::get('categories', [\App\Http\Controllers\CategoryController::class, 'index']);
     // Ingredients
     Route::get('ingredients', [\App\Http\Controllers\IngredientController::class, 'index']);
+    // Recipes
+    Route::get('recipes', [\App\Http\Controllers\RecipeController::class, 'index']);
 });
 
 ///////////
@@ -36,3 +38,12 @@ Route::prefix('admin')->name('admin.')->middleware(['auth:sanctum', 'verified', 
 
     Route::apiResource('categories', \App\Http\Controllers\Admin\CategoryController::class);
 });
+
+//////////////
+// Customer //
+//////////////
+Route::prefix('customer')->name('customer.')->middleware(['auth:sanctum', 'auth.customer'])->group(function () {
+    // Recipes
+    Route::apiResource('recipes', \App\Http\Controllers\Customer\RecipeController::class);
+});
+
