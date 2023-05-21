@@ -8,6 +8,7 @@ import { AppComponent } from './app.component';
 import {RouterModule} from "@angular/router";
 import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {AuthInterceptorService} from "./services/auth/auth-interceptor.service";
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 
 registerLocaleData(localeDe);
 
@@ -19,7 +20,8 @@ registerLocaleData(localeDe);
     BrowserModule,
     AppRoutingModule,
     RouterModule,
-    HttpClientModule
+    HttpClientModule,
+    BrowserAnimationsModule
   ],
   providers: [
     {provide: LOCALE_ID, useValue: 'de'},
