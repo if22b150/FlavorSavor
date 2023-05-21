@@ -37,4 +37,6 @@ class RecipeController extends Controller
         ];
         return $this->recipeService->create($request->user()->id, $data);
     }
+
+    public function update()
 }
