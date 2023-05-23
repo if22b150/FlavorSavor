@@ -3,7 +3,7 @@
 ## Backend
 ### Setup
 #### Datenbank
-XAMPP MySQL starten
+XAMPP MySQL starten \
 Über Console/Shell eine neue DB anlegen:
 ```
 mysql -u root -p

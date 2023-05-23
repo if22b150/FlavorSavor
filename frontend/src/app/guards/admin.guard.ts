@@ -19,7 +19,7 @@ export class AdminGuard  {
     return this.authService.user$.pipe(
       take(1),
       map((user: User) => {
-        console.log(user)
+        console.log(user.email)
         if (user && user.role == ERole.ADMIN) {
           return true;
         } else {
