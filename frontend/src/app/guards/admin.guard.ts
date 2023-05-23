@@ -19,7 +19,6 @@ export class AdminGuard  {
     return this.authService.user$.pipe(
       take(1),
       map((user: User) => {
-        console.log(user)
         if (user && user.role == ERole.ADMIN) {
           return true;
         } else {
