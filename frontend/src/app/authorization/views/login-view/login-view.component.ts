@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {AbstractControl, FormBuilder, FormGroup, Validators} from "@angular/forms";
 
 @Component({
   selector: 'app-login-view',
@@ -6,10 +7,27 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./login-view.component.scss']
 })
 export class LoginViewComponent implements OnInit {
+  loginForm: FormGroup;
+  loading: boolean;
 
-  constructor() { }
+  constructor(private fb: FormBuilder) { }
 
   ngOnInit(): void {
+    this.loginForm = this.fb.group({
+      user: [null, [Validators.required]],
+      password: [null, Validators.required]
+    })
+  }
+
+  submit() {
+    this.loading = true;
+  }
+
+  get user(): AbstractControl {
+    return this.loginForm.get('user');
+  }
+  get password(): AbstractControl {
+    return this.loginForm.get('password');
   }
 
 }

@@ -9,7 +9,7 @@ const routes: Routes = [
     component: FrontendComponent,
     children: [
       {path: 'recipes', component: RecipesViewComponent},
-      {path: '', redirectTo: 'recipes'}
+      {path: '', redirectTo: '/recipes', pathMatch: 'full'}
     ]
   }
 ];

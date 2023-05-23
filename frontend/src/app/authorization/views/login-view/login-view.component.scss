@@ -1,0 +1,19 @@
+.form-wrapper {
+  display: flex;
+  flex-flow: row;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100vh;
+
+  form {
+    //mdb-form-control.login-input {
+    //  max-width: 500px;
+    //  width: 250px;
+    //
+    //  mdb-error {
+    //    margin-top: 5px;
+    //  }
+    //}
+  }
+}

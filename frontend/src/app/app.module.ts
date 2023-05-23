@@ -9,6 +9,7 @@ import {RouterModule} from "@angular/router";
 import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {AuthInterceptorService} from "./services/auth/auth-interceptor.service";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 
 registerLocaleData(localeDe);
 
@@ -21,11 +22,15 @@ registerLocaleData(localeDe);
     AppRoutingModule,
     RouterModule,
     HttpClientModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [
     {provide: LOCALE_ID, useValue: 'de'},
     {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptorService, multi: true},
+  ],
+  exports: [
   ],
   bootstrap: [AppComponent]
 })
