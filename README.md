@@ -28,3 +28,12 @@ php artisan storage:link
 `php artisan serve`
 
 Die Backend-Anwendung sollte nun [hier](http://127.0.0.1:8000/) aufrufbar sein.
+
+
+## Frontend
+### Setup
+```
+cd frontend
+npm install
+ng serve
+```
