@@ -22,9 +22,12 @@
         <a class="font-medium no-underline ml-2 text-blue-500 text-right cursor-pointer">Passwort vergessen?</a>
       </div>
 
-      <button pButton pRipple label="Log in" icon="pi pi-user" class="w-full" [loading]="loading" (click)="submit()"></button>
+      <div class="card flex justify-content-center">
+        <p-button pRipple label="Log in" [loading]="loading" (click)="submit()"></p-button>
+      </div>
 
     </form>
   </div>
 
 </div>
+<p-toast></p-toast>

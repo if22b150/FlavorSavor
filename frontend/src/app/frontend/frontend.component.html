@@ -1,8 +1,12 @@
 <p-menubar [model]="items"  styleClass="navigation">
   <ng-template pTemplate="start">
-    <img src="assets/images/logo-transparent.png" height="40" class="mr-2" />
+    <a [routerLink]="['recipes']">
+      <img src="assets/images/logo-transparent.png" height="40" class="mr-2" />
+    </a>
   </ng-template>
 </p-menubar>
 
 
 <router-outlet></router-outlet>
+
+<p-toast></p-toast>

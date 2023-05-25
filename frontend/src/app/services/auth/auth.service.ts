@@ -19,6 +19,9 @@ export class AuthService {
     return this._user.value?.token;
   }
 
+  public get isLoggedIn(): boolean {
+    return this._user.value != null;
+  }
 
   constructor(private http: HttpClient,
               private router: Router) {
@@ -26,8 +29,8 @@ export class AuthService {
     this._user = new BehaviorSubject<User>(savedUser);
   }
 
-  public login(email: string, password: string): Observable<User> {
-    return this.http.post<User>(environment.apiUrl + 'auth/login', {email, password})
+  public login(user: string, password: string): Observable<User> {
+    return this.http.post<User>(environment.apiUrl + 'auth/login', {user, password})
       .pipe(
         tap((user: User) => {
           this._user.next(user);
@@ -37,17 +40,17 @@ export class AuthService {
       );
   }
 
-  public logout(): void {
+  public logout(): Observable<any> {
 
     // log user out on server
-    this.http.post<any>(environment.apiUrl + 'logout', {})
+    return this.http.post<any>(environment.apiUrl + 'auth/logout', {})
       .pipe(
         take(1),
-        finalize(() => {
+        tap(() => {
           // log user out in browser
           localStorage.removeItem('user');
           this._user.next(null);
           this.router.navigate(['login']);
-        })).subscribe();
+        }));
   }
 }

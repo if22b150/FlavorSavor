@@ -7,7 +7,7 @@ import {ERole, User} from "../models/user.model";
 @Injectable({
   providedIn: 'root'
 })
-export class AdminGuard  {
+export class UserGuard  {
 
   constructor(private authService: AuthService,
               private router: Router) {
@@ -19,7 +19,7 @@ export class AdminGuard  {
     return this.authService.user$.pipe(
       take(1),
       map((user: User) => {
-        if (user && user.role == ERole.ADMIN) {
+        if (user && user.role == ERole.CUSTOMER) {
           return true;
         } else {
           this.router.navigate(['auth/login']);

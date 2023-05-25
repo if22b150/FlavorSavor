@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import {AbstractControl, FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {AuthService} from "../../../services/auth/auth.service";
+import {finalize} from "rxjs";
+import {MessageService} from "primeng/api";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-login-view',
@@ -12,7 +15,9 @@ export class LoginViewComponent implements OnInit {
   loading: boolean;
 
   constructor(private fb: FormBuilder,
-              private authService: AuthService) { }
+              private authService: AuthService,
+              private messageService: MessageService,
+              private router: Router) { }
 
   ngOnInit(): void {
     this.loginForm = this.fb.group({
@@ -22,7 +27,33 @@ export class LoginViewComponent implements OnInit {
   }
 
   submit() {
+    if(this.loginForm.invalid)
+      return;
+
     this.loading = true;
+
+    this.authService.login(
+      this.user.value,
+      this.password.value
+    )
+      .pipe(finalize(() => this.loading = false))
+      .subscribe(
+        {
+          next: () => {
+            this.router.navigate(['']).then(() => {
+                this.messageService.add({ severity: 'success', summary: 'Erfolgreich', detail: 'Der Login war erfolgreich.' });
+            });
+          },
+          error: (e) => {
+            if(e.error == "Credentials incorrect")
+              this.messageService.add({ severity: 'error', summary: 'Fehler', detail: 'Das Passwort ist inkorrekt.' });
+            else if (e.error == "The selected email or username is invalid.")
+              this.messageService.add({ severity: 'error', summary: 'Fehler', detail: 'Ungültiger Username oder E-Mail Adresse.' });
+            else
+              this.messageService.add({ severity: 'error', summary: 'Fehler', detail: 'Es ist ein Fehler aufgetreten.' });
+          }
+        }
+      )
   }
 
   get user(): AbstractControl {
