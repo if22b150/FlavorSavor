@@ -1,4 +1,4 @@
-# FlavorSavorr
+# FlavorSavor
 
 ## Backend
 ### Setup
