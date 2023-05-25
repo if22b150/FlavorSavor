@@ -7,6 +7,7 @@ import {PrimeNgModule} from "../shared/modules/primeNg.module";
 import {ButtonModule} from "primeng/button";
 import { CookbookViewComponent } from './views/cookbook-view/cookbook-view.component';
 import { AccountViewComponent } from './views/account-view/account-view.component';
+import { RecipesListComponent } from './components/recipes-list/recipes-list.component';
 
 
 
@@ -15,7 +16,8 @@ import { AccountViewComponent } from './views/account-view/account-view.componen
     FrontendComponent,
     RecipesViewComponent,
     CookbookViewComponent,
-    AccountViewComponent
+    AccountViewComponent,
+    RecipesListComponent
   ],
   imports: [
     CommonModule,

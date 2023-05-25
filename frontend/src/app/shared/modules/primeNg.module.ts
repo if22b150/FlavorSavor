@@ -8,6 +8,7 @@ import {BtnLoadingDirective} from "../directives/btn-loading.directive";
 import {TagModule} from "primeng/tag";
 import {MessageService} from "primeng/api";
 import {ToastModule} from "primeng/toast";
+import { DataViewModule } from 'primeng/dataview';
 
 @NgModule({
   providers: [
@@ -24,7 +25,8 @@ import {ToastModule} from "primeng/toast";
     RippleModule,
     BtnLoadingDirective,
     TagModule,
-    ToastModule
+    ToastModule,
+    DataViewModule
   ]
 })
 export class PrimeNgModule { }
