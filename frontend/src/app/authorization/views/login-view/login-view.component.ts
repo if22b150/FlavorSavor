@@ -11,7 +11,7 @@ import {Router} from "@angular/router";
   styleUrls: ['./login-view.component.scss']
 })
 export class LoginViewComponent implements OnInit {
-  loginForm: FormGroup;
+  signupForm: FormGroup;
   loading: boolean;
 
   constructor(private fb: FormBuilder,
@@ -20,14 +20,14 @@ export class LoginViewComponent implements OnInit {
               private router: Router) { }
 
   ngOnInit(): void {
-    this.loginForm = this.fb.group({
+    this.signupForm = this.fb.group({
       user: [null, [Validators.required]],
       password: [null, Validators.required]
     })
   }
 
   submit() {
-    if(this.loginForm.invalid)
+    if(this.signupForm.invalid)
       return;
 
     this.loading = true;
@@ -57,10 +57,10 @@ export class LoginViewComponent implements OnInit {
   }
 
   get user(): AbstractControl {
-    return this.loginForm.get('user');
+    return this.signupForm.get('user');
   }
   get password(): AbstractControl {
-    return this.loginForm.get('password');
+    return this.signupForm.get('password');
   }
 
 }
