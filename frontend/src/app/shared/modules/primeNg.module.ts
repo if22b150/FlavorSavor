@@ -9,6 +9,8 @@ import {TagModule} from "primeng/tag";
 import {MessageService} from "primeng/api";
 import {ToastModule} from "primeng/toast";
 import { DataViewModule } from 'primeng/dataview';
+import { RatingModule } from 'primeng/rating';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   providers: [
@@ -26,7 +28,9 @@ import { DataViewModule } from 'primeng/dataview';
     BtnLoadingDirective,
     TagModule,
     ToastModule,
-    DataViewModule
+    DataViewModule,
+    RatingModule,
+    FormsModule
   ]
 })
 export class PrimeNgModule { }

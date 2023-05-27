@@ -22,7 +22,7 @@
 
       <label for="password" class="block text-900 font-medium mb-2">Passwort</label>
       <input id="password" formControlName="password" type="password" placeholder="Passwort" pInputText class="w-full mb-3">
-      <div *ngIf="password.hasError('minLength')">Passwort zu kurz</div>
+      <div *ngIf="password.hasError('minlength')">Passwort zu kurz</div>
 
       <label for="password_confirmation" class="block text-900 font-medium mb-2">Passwort bestätigen</label>
       <input id="password_confirmation" formControlName="password_confirmation" type="password" placeholder="Passwortwiederholung" pInputText class="w-full mb-3">
