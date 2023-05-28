@@ -89,6 +89,31 @@ class UserService
 
         return response()->json(['message' => 'Logged out']);
     }
+
+    public function checkUsername(string $username)
+    {
+        $user = $this->userRepository->getFirstWhere('username', $username);
+
+        return response()->json(['valid' => $user == null]);
+    }
+
+    public function checkEmail(string $email)
+    {
+        $user = $this->userRepository->getFirstWhere('email', $email);
+
+        return response()->json(['valid' => $user == null]);
+    }
+
+    public function resendVerificationEmail(int $user_id)
+    {
+        $user = $this->userRepository->get($user_id);
+        if ($user->hasVerifiedEmail())
+            return response('User has already verified email address', 403);
+        $user->sendEmailVerificationNotification();
+
+        return response('', 204);
+    }
+
 //
 //    public function verifyEmail(array $data)
 //    {
@@ -106,17 +131,6 @@ class UserService
 //        return view('auth.email-verified-success');
 //    }
 //
-//    public function resendVerificationEmail(string $email)
-//    {
-//        $user = $this->userRepository->getFirstWhere('email', $email);
-//        if (!$user)
-//            return response('User with this email address does not exist', 404);
-//        if ($user->hasVerifiedEmail())
-//            return response('User has already verified email address', 403);
-//        $user->sendEmailVerificationNotification();
-//
-//        return response('', 204);
-//    }
 //
 //    public function changePassword(array $data)
 //    {

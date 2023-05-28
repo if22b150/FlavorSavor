@@ -9,6 +9,9 @@ import {TagModule} from "primeng/tag";
 import {MessageService} from "primeng/api";
 import {ToastModule} from "primeng/toast";
 import { DataViewModule } from 'primeng/dataview';
+import {PasswordModule} from "primeng/password";
+import {AutoFocusModule} from "primeng/autofocus";
+import {MessagesModule} from "primeng/messages";
 
 @NgModule({
   providers: [
@@ -26,7 +29,10 @@ import { DataViewModule } from 'primeng/dataview';
     BtnLoadingDirective,
     TagModule,
     ToastModule,
-    DataViewModule
+    DataViewModule,
+    PasswordModule,
+    AutoFocusModule,
+    MessagesModule
   ]
 })
 export class PrimeNgModule { }

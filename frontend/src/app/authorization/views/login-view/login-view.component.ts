@@ -3,7 +3,8 @@ import {AbstractControl, FormBuilder, FormGroup, Validators} from "@angular/form
 import {AuthService} from "../../../services/auth/auth.service";
 import {finalize} from "rxjs";
 import {MessageService} from "primeng/api";
-import {Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
+import { Message } from 'primeng/api';
 
 @Component({
   selector: 'app-login-view',
@@ -13,13 +14,25 @@ import {Router} from "@angular/router";
 export class LoginViewComponent implements OnInit {
   signupForm: FormGroup;
   loading: boolean;
+  newVerifyEmail: boolean = false;
+  verifyEmailSent: boolean = false;
+  messages: Message[];
 
   constructor(private fb: FormBuilder,
               private authService: AuthService,
               private messageService: MessageService,
+              private route: ActivatedRoute,
               private router: Router) { }
 
   ngOnInit(): void {
+    this.route.queryParamMap.subscribe(params => {
+      if(params.get('verify')) {
+        setTimeout(() => {
+          this.messageService.add({ severity: 'success', summary: 'Erfolgreich', detail: 'Registrierung war erfolgreich. Bestätige nun die Verifizierungs-Mail.' });
+        });
+      }
+    });
+
     this.signupForm = this.fb.group({
       user: [null, [Validators.required]],
       password: [null, Validators.required]
@@ -31,6 +44,7 @@ export class LoginViewComponent implements OnInit {
       return;
 
     this.loading = true;
+    this.verifyEmailSent = false;
 
     this.authService.login(
       this.user.value,
@@ -39,10 +53,23 @@ export class LoginViewComponent implements OnInit {
       .pipe(finalize(() => this.loading = false))
       .subscribe(
         {
-          next: () => {
-            this.router.navigate(['']).then(() => {
-                this.messageService.add({ severity: 'success', summary: 'Erfolgreich', detail: 'Der Login war erfolgreich.' });
-            });
+          next: (user) => {
+            if(user.verified)
+              this.router.navigate(['']).then(() => {
+                  this.messageService.add({
+                    severity: 'success',
+                    summary: 'Erfolgreich',
+                    detail: 'Der Login war erfolgreich.'
+                  });
+              });
+            else {
+              this.newVerifyEmail = true;
+              this.messageService.add({
+                severity: 'error',
+                summary: 'Verifizierung ausstehend',
+                detail: 'Bestätige deine E-Mail Adresse über die Verifizierungs-Mail in deinem Postkasten.'
+              });
+            }
           },
           error: (e) => {
             if(e.error == "Credentials incorrect")
@@ -54,6 +81,21 @@ export class LoginViewComponent implements OnInit {
           }
         }
       )
+  }
+
+  resendVerification() {
+    this.authService.resendVerificationMail()
+      .subscribe({
+        next: () => {
+          this.verifyEmailSent = true;
+          this.newVerifyEmail = false;
+          this.messages = [{ severity: 'success', detail: 'Eine neue Verifizierungs-Mail wurde an ' + this.authService.user.email + ' verschickt.' }];
+        },
+        error: (e) => {
+          console.log(e);
+          this.messageService.add({ severity: 'error', summary: 'Fehler', detail: 'Mail konnte nicht verschickt werden.' });
+        }
+      })
   }
 
   get user(): AbstractControl {

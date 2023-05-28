@@ -2,19 +2,12 @@
 
 namespace App\Http\Controllers;
 
-//use App\Http\Requests\User\ChangePasswordRequest;
-//use App\Http\Requests\User\ForgotPasswordEmailRequest;
-//use App\Http\Requests\User\LoginRequest;
+use App\Http\Requests\User\EmailExistsRequest;
 use App\Http\Requests\User\LoginRequest;
 use App\Http\Requests\User\RegistrationRequest;
-//use App\Http\Requests\User\ResendVerificationEmailRequest;
-//use App\Http\Requests\User\ResetPasswordRequest;
-//use App\Http\Requests\User\StoreUserRequest;
-//use App\Models\Customer;
+use App\Http\Requests\User\UsernameExistsRequest;
 use App\Services\UserService;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 
 class UserController extends Controller
 {
@@ -58,5 +51,20 @@ class UserController extends Controller
     public function logout(Request $request)
     {
         return $this->userService->logout($request->user());
+    }
+
+    public function checkUsername(UsernameExistsRequest $request)
+    {
+        return $this->userService->checkUsername($request->username);
+    }
+
+    public function checkEmail(EmailExistsRequest $request)
+    {
+        return $this->userService->checkEmail($request->email);
+    }
+
+    public function resendVerificationEmail(Request $request)
+    {
+        return $this->userService->resendVerificationEmail($request->user()->id);
     }
 }

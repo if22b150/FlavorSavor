@@ -15,12 +15,16 @@ export class AuthService {
     return this._user.asObservable();
   }
 
+  public get user(): User {
+    return this._user.value;
+  }
+
   public get token(): string {
     return this._user.value?.token;
   }
 
   public get isLoggedIn(): boolean {
-    return this._user.value != null;
+    return this._user.value != null && this._user.value.verified;
   }
 
   constructor(private http: HttpClient,
@@ -52,5 +56,20 @@ export class AuthService {
           this._user.next(null);
           this.router.navigate(['login']);
         }));
+  }
+
+  public signup(username: string, email: string, password: string, password_confirmation: string): Observable<User> {
+    return this.http.post<User>(environment.apiUrl + 'auth/register', {username, email, password, password_confirmation});
+  }
+
+  public checkUsername(username: string): Observable<{valid: boolean}> {
+    return this.http.patch<{valid: boolean}>(environment.apiUrl + 'auth/username', {username});
+  }
+  public checkEmail(email: string): Observable<{valid: boolean}> {
+    return this.http.patch<{valid: boolean}>(environment.apiUrl + 'auth/email', {email});
+  }
+
+  public resendVerificationMail(): Observable<any> {
+    return this.http.post<any>(environment.apiUrl + 'auth/resend-verification-email', {});
   }
 }

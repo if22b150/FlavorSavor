@@ -16,7 +16,7 @@ export class FrontendComponent implements OnInit {
   ngOnInit(): void {
     this.authService.user$.subscribe({
       next: (user: User) => {
-        if(user) {
+        if(this.authService.isLoggedIn) {
           this.items = [
             {
               label: 'Rezepte durchsuchen',

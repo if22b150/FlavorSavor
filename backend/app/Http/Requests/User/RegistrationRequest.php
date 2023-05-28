@@ -25,7 +25,7 @@ class RegistrationRequest extends FormRequest
     {
         return [
             // user
-            'username' => ['required', 'string', 'alpha_dash', 'unique:users,username'],
+            'username' => ['required', 'string', 'min:3', 'alpha_dash', 'unique:users,username'],
             'email' => ['required', 'email', 'unique:users,email'],
             'password' => ['required', 'min:6', 'confirmed'], //  a matching password_confirmation field must be present in the input
         ];

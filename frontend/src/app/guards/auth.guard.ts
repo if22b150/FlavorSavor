@@ -18,7 +18,7 @@ export class AuthGuard  {
     return this.authService.user$.pipe(
       take(1),
       map((user: User) => {
-        if(!user)
+        if(!this.authService.isLoggedIn)
           return true;
 
         if (user.role == ERole.ADMIN) {

@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import {AbstractControl, FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {AbstractControl, AsyncValidatorFn, FormBuilder, FormGroup, ValidationErrors, Validators} from "@angular/forms";
 import {AuthService} from "../../../services/auth/auth.service";
 import {MessageService} from "primeng/api";
 import {Router} from "@angular/router";
-import {finalize} from "rxjs";
+import {finalize, map, Observable, of} from "rxjs";
 
 @Component({
   selector: 'app-signup-view',
@@ -13,6 +13,8 @@ import {finalize} from "rxjs";
 export class SignupViewComponent {
   signupForm: FormGroup;
   loading: boolean;
+  submitted: boolean;
+  passwordsDontMatch: boolean;
 
   constructor(private fb: FormBuilder,
               private authService: AuthService,
@@ -21,41 +23,69 @@ export class SignupViewComponent {
 
   ngOnInit(): void {
     this.signupForm = this.fb.group({
-      username: [null, [Validators.required, Validators.pattern('^[a-zA-Z0-9-_öäüß]+$')]],
-      email: [null , [Validators.required, Validators.email]],
-      password: [null, Validators.required, Validators.minLength(6)],
+      username: [null, [Validators.required, Validators.minLength(3), Validators.pattern('^[a-zA-Z0-9-_öäüß]+$')], [this.usernameIsUniqueValidator()]],
+      email: [null , [Validators.required, Validators.email], [this.emailIsUniqueValidator()]],
+      password: [null, [Validators.required, Validators.minLength(6)]],
       password_confirmation: [null, Validators.required]
     })
   }
 
   submit() {
+    this.submitted =true;
+    this.passwordsDontMatch = false;
+
     if(this.signupForm.invalid)
       return;
+    if(this.password.value != this.password_confirmation.value) {
+      this.passwordsDontMatch = true;
+      return;
+    }
 
     this.loading = true;
 
-    // this.authService.signup(
-    //   this.username.value,
-    //   this.password.value
-    // )
-    //   .pipe(finalize(() => this.loading = false))
-    //   .subscribe(
-    //     {
-    //       next: () => {
-    //         this.router.navigate(['']).then(() => {
-    //           this.messageService.add({ severity: 'success', summary: 'Erfolgreich', detail: 'Der Signup war erfolgreich.' });
-    //         });
-    //       },
-    //       error: (e) => {
-    //         if(e.error == "Credentials incorrect")
-    //           this.messageService.add({ severity: 'error', summary: 'Fehler', detail: 'Das Passwort ist inkorrekt.' });
-    //         else if (e.error == "The selected email or usernamename is invalid.")
-    //           this.messageService.add({ severity: 'error', summary: 'Fehler', detail: 'Ungültiger usernamename oder E-Mail Adresse.' });
-    //         else
-    //           this.messageService.add({ severity: 'error', summary: 'Fehler', detail: 'Es ist ein Fehler aufgetreten.' });
-    //       }
-    //     }
-    //   )
+    this.authService.signup(
+      this.username.value,
+      this.email.value,
+      this.password.value,
+      this.password_confirmation.value
+    )
+      .pipe(finalize(() => this.loading = false))
+      .subscribe(
+        {
+          next: () => {
+            this.router.navigate(['/auth/login'], {queryParams: {'verify': true}});
+          },
+          error: (e) => {
+            console.log(e)
+              this.messageService.add({ severity: 'error', summary: 'Fehler', detail: 'Es ist ein Fehler aufgetreten.' });
+          }
+        }
+      )
+  }
+
+  usernameIsUniqueValidator(): AsyncValidatorFn {
+    return (control: AbstractControl): Observable<ValidationErrors | null> => {
+      if(control.value.length >= 3)
+        return this.authService.checkUsername(control.value).pipe(
+          map((data: { valid: boolean }) => {
+            return data.valid ? null : {usernameExists: true};
+          })
+        );
+      else
+        return null;
+    };
+  }
+  emailIsUniqueValidator(): AsyncValidatorFn {
+    return (control: AbstractControl): Observable<ValidationErrors | null> => {
+      if(control.value.length >= 5)
+        return this.authService.checkEmail(control.value).pipe(
+          map((data: { valid: boolean }) => {
+            return data.valid ? null : {emailExists: true};
+          })
+        );
+      else
+        return null;
+    };
   }
 
   get username(): AbstractControl {

@@ -12,24 +12,45 @@
     </div>
 
     <form [formGroup]="signupForm">
-      <label for="username" class="block text-900 font-medium mb-2">Benutzername</label>
-      <input id="username" formControlName="username" type="text" placeholder="Benutzername" pInputText class="w-full mb-3">
-      <div *ngIf="username.hasError('pattern')">kein gültiger Username</div>
+      <div class="mb-4">
+        <label for="username" class="block text-900 font-medium mb-2">Benutzername</label>
+        <input id="username" formControlName="username" type="text" placeholder="Benutzername" pInputText pAutoFocus [autofocus]="true" class="w-full">
 
-      <label for="email" class="block text-900 font-medium mb-2">E-mail</label>
-      <input id="email" formControlName="email" type="email" placeholder="E-mail" pInputText class="w-full mb-3">
-      <div *ngIf="email.hasError('email')">keine gültige E-mail</div>
+        <div style="position: relative">
+          <small style="position: absolute" *ngIf="username.hasError('pattern') && username.touched">Keine Sonderzeichen außer "-" und "_" erlaubt</small>
+          <small style="position: absolute" *ngIf="username.hasError('usernameExists')">Username existiert bereits</small>
+          <small style="position: absolute" *ngIf="username.hasError('minlength') && username.touched">Username muss mindestens 3 Zeichen lang sein</small>
+          <small style="position: absolute" *ngIf="username.hasError('required') && (username.touched || submitted)">Username  ist erforderlich</small>
+        </div>
+      </div>
 
-      <label for="password" class="block text-900 font-medium mb-2">Passwort</label>
-      <input id="password" formControlName="password" type="password" placeholder="Passwort" pInputText class="w-full mb-3">
-      <div *ngIf="password.hasError('minLength')">Passwort zu kurz</div>
+      <div class="mb-4">
+        <label for="email" class="block text-900 font-medium mb-2">E-Mail Adresse</label>
+        <input id="email" formControlName="email" type="email" placeholder="E-Mail Adresse" pInputText class="w-full">
+        <div style="position: relative">
+          <small style="position: absolute" *ngIf="email.hasError('email') && email.touched">E-Mail Adresse ungültig</small>
+          <small style="position: absolute" *ngIf="email.hasError('required') && (email.touched || submitted)">E-Mail Adresse ist erforderlich</small>
+          <small style="position: absolute" *ngIf="email.hasError('emailExists')">E-Mail Adresse existiert bereits</small>
+        </div>
+      </div>
 
-      <label for="password_confirmation" class="block text-900 font-medium mb-2">Passwort bestätigen</label>
-      <input id="password_confirmation" formControlName="password_confirmation" type="password" placeholder="Passwortwiederholung" pInputText class="w-full mb-3">
+      <div class="mb-4">
+        <label for="password" class="block text-900 font-medium mb-2">Passwort</label>
+        <p-password id="password" formControlName="password" [toggleMask]="true" [feedback]="false" styleClass="w-full" inputStyleClass="w-full"></p-password>
+        <div style="position: relative">
+          <small style="position: absolute" *ngIf="password.hasError('minlength') && password.touched">Passwort muss mindestens 6 Zeichen lang sein</small>
+          <small style="position: absolute" *ngIf="password.hasError('required') && (password.touched || submitted)">Passwort ist erforderlich</small>
+        </div>
+      </div>
 
-<!--     <div class="flex align-items-center justify-content-between mb-4">-->
-<!--     <a class="font-medium no-underline ml-2 text-blue-500 text-right cursor-pointer">Passwort vergessen?</a>-->
-<!--     </div>-->
+      <div class="mb-4">
+        <label for="password_confirmation" class="block text-900 font-medium mb-2">Passwort bestätigen</label>
+        <p-password id="password_confirmation" formControlName="password_confirmation" [toggleMask]="true" [feedback]="false" styleClass="w-full" inputStyleClass="w-full"></p-password>
+        <div style="position: relative">
+          <small style="position: absolute" *ngIf="password_confirmation.hasError('required') && (password_confirmation.touched || submitted)">Passwortwiederholung ist erforderlich</small>
+          <small style="position: absolute" *ngIf="passwordsDontMatch">Passwortwiederholung stimmt nicht mit Passwort überein</small>
+        </div>
+      </div>
 
       <div class="card flex justify-content-center">
         <p-button pRipple label="Registrieren" [loading]="loading" (click)="submit()"></p-button>

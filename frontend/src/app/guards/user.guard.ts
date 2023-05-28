@@ -19,7 +19,7 @@ export class UserGuard  {
     return this.authService.user$.pipe(
       take(1),
       map((user: User) => {
-        if (user && user.role == ERole.CUSTOMER) {
+        if (this.authService.isLoggedIn && user.role == ERole.CUSTOMER) {
           return true;
         } else {
           this.router.navigate(['auth/login']);
