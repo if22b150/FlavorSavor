@@ -12,6 +12,7 @@ import { DataViewModule } from 'primeng/dataview';
 import {PasswordModule} from "primeng/password";
 import {AutoFocusModule} from "primeng/autofocus";
 import {MessagesModule} from "primeng/messages";
+import { RatingModule } from 'primeng/rating';
 
 @NgModule({
   providers: [
@@ -30,6 +31,7 @@ import {MessagesModule} from "primeng/messages";
     TagModule,
     ToastModule,
     DataViewModule,
+    RatingModule,
     PasswordModule,
     AutoFocusModule,
     MessagesModule
