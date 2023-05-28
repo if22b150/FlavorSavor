@@ -1,5 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Recipe} from "../../../models/recipe.model";
+import {Category} from "../../../models/category.model";
+import {ERole} from "../../../models/user.model";
 
 
 @Component({
@@ -27,11 +29,23 @@ export class RecipesListComponent implements OnInit {
           ' et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.',
         time: 30,
         servings: 2,
-        imagePath: '',
+        imagePath: 'assets/images/recipe.jpg',
         ingredients: [
           {
             id: 1,
-            name: 'Ei'
+            name: 'Eier'
+          },
+          {
+            id: 2,
+            name: 'Zwiebeln'
+          },
+          {
+            id: 3,
+            name: 'Salz'
+          },
+          {
+            id: 4,
+            name: 'Pfeffer'
           }
         ],
         categories: [
@@ -39,24 +53,30 @@ export class RecipesListComponent implements OnInit {
             id: 1,
             name: 'Proteinreich'
           }
-        ]
+        ],
+        user: {
+          id: 1,
+          email: '',
+          verified: true,
+          username: 'JohnBoy',
+          role: ERole.CUSTOMER
+        }
       }
     ]
   }
 
-  // getCategorySeverity (recipe) {
-  //   switch (product.inventoryStatus) {
-  //     case 'INSTOCK':
-  //       return 'success';
-  //
-  //     case 'LOWSTOCK':
-  //       return 'warning';
-  //
-  //     case 'OUTOFSTOCK':
-  //       return 'danger';
-  //
-  //     default:
-  //       return null;
-  //   }
-  // };
+  getCategorySeverity (category: Category) {
+    switch (category.name) {
+      case 'Proteinreich':
+        return 'warning';
+      // case 'LOWSTOCK':
+      //   return 'warning';
+      //
+      // case 'OUTOFSTOCK':
+      //   return 'danger';
+
+      default:
+        return null;
+    }
+  };
 }

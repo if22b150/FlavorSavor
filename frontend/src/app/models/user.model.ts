@@ -2,6 +2,7 @@ import {AModel} from "./a-model.model";
 
 export interface User extends AModel {
   email: string;
+  username: string;
   verified: boolean;
   token?: string;
   role: ERole;
