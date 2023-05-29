@@ -1,6 +1,7 @@
 import {Ingredient} from "./ingredient.model";
 import {AModel} from "./a-model.model";
 import {User} from "./user.model";
+import {RecipeIngredient} from "./recipe-ingredient.model";
 
 export interface Recipe extends AModel{
   title: string;
@@ -10,6 +11,6 @@ export interface Recipe extends AModel{
   servings: number;
 
   user: User;
-  ingredients: Ingredient[];
+  ingredients: RecipeIngredient[];
   categories: Ingredient[];
 }

@@ -2,6 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {Recipe} from "../../../models/recipe.model";
 import {Category} from "../../../models/category.model";
 import {ERole} from "../../../models/user.model";
+import {RecipeService} from "../../../services/recipe.service";
+import {finalize} from "rxjs";
 
 
 @Component({
@@ -11,58 +13,68 @@ import {ERole} from "../../../models/user.model";
 })
 export class RecipesListComponent implements OnInit {
   recipes: Recipe[];
+  recipesLoading: boolean;
 
-  constructor() {
+  constructor(public recipeService: RecipeService) {
 
   }
 
   ngOnInit() {
-    this.recipes = [
-      {
-        id: 1,
-        title: 'Eierspeiß',
-        description: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor ' +
-          'invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo ' +
-          'duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit ' +
-          'amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ' +
-          'ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores' +
-          ' et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.',
-        time: 30,
-        servings: 2,
-        imagePath: 'assets/images/recipe.jpg',
-        ingredients: [
-          {
-            id: 1,
-            name: 'Eier'
-          },
-          {
-            id: 2,
-            name: 'Zwiebeln'
-          },
-          {
-            id: 3,
-            name: 'Salz'
-          },
-          {
-            id: 4,
-            name: 'Pfeffer'
-          }
-        ],
-        categories: [
-          {
-            id: 1,
-            name: 'Proteinreich'
-          }
-        ],
-        user: {
-          id: 1,
-          email: '',
-          verified: true,
-          username: 'JohnBoy',
-          role: ERole.CUSTOMER
+    this.recipesLoading = true;
+    this.recipeService.getAll()
+      .pipe(finalize(() => this.recipesLoading = false))
+      .subscribe({
+        next: (recipes) => {
+          this.recipes = recipes;
         }
-      }
-    ]
+      })
+
+    // this.recipes = [
+    //   {
+    //     id: 1,
+    //     title: 'Eierspeiß',
+    //     description: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor ' +
+    //       'invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo ' +
+    //       'duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit ' +
+    //       'amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ' +
+    //       'ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores' +
+    //       ' et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.',
+    //     time: 30,
+    //     servings: 2,
+    //     imagePath: 'assets/images/recipe.jpg',
+    //     ingredients: [
+    //       {
+    //         id: 1,
+    //         name: 'Eier'
+    //       },
+    //       {
+    //         id: 2,
+    //         name: 'Zwiebeln'
+    //       },
+    //       {
+    //         id: 3,
+    //         name: 'Salz'
+    //       },
+    //       {
+    //         id: 4,
+    //         name: 'Pfeffer'
+    //       }
+    //     ],
+    //     categories: [
+    //       {
+    //         id: 1,
+    //         name: 'Proteinreich'
+    //       }
+    //     ],
+    //     user: {
+    //       id: 1,
+    //       email: '',
+    //       verified: true,
+    //       username: 'JohnBoy',
+    //       role: ERole.CUSTOMER
+    //     }
+    //   }
+    // ]
   }
 
   getCategorySeverity (category: Category) {
