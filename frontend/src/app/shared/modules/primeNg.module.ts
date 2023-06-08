@@ -13,6 +13,12 @@ import {PasswordModule} from "primeng/password";
 import {AutoFocusModule} from "primeng/autofocus";
 import {MessagesModule} from "primeng/messages";
 import { RatingModule } from 'primeng/rating';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { FieldsetModule } from 'primeng/fieldset';
+import {TableModule} from "primeng/table";
+import { DividerModule } from 'primeng/divider';
+import { ImageModule } from 'primeng/image';
+
 
 @NgModule({
   providers: [
@@ -34,7 +40,12 @@ import { RatingModule } from 'primeng/rating';
     RatingModule,
     PasswordModule,
     AutoFocusModule,
-    MessagesModule
+    MessagesModule,
+    ProgressSpinnerModule,
+    FieldsetModule,
+    TableModule,
+    DividerModule,
+    ImageModule
   ]
 })
 export class PrimeNgModule { }

@@ -1,0 +1,4 @@
+<div class="flex align-items-center gap-3">
+  <i *ngIf="withIcon" class="pi pi-tag"></i>
+  <p-tag *ngFor="let category of categories" [value]="category.name" [severity]="getCategorySeverity(category)"></p-tag>
+</div>

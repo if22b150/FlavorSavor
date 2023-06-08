@@ -4,6 +4,8 @@ import {Category} from "../../../models/category.model";
 import {ERole} from "../../../models/user.model";
 import {RecipeService} from "../../../services/recipe.service";
 import {finalize} from "rxjs";
+import {Router} from "@angular/router";
+import {BreadcrumbService} from "../../../services/breadcrumb.service";
 
 
 @Component({
@@ -15,7 +17,9 @@ export class RecipesListComponent implements OnInit {
   recipes: Recipe[];
   recipesLoading: boolean;
 
-  constructor(public recipeService: RecipeService) {
+  constructor(public recipeService: RecipeService,
+              private router: Router,
+              private breadcrumbService: BreadcrumbService) {
 
   }
 
@@ -77,6 +81,10 @@ export class RecipesListComponent implements OnInit {
     // ]
   }
 
+  navigateToRecipe(recipe: Recipe) {
+    this.breadcrumbService.breadcrumb = {link: '/recipes', text: 'Alle Rezepte'};
+  }
+
   getCategorySeverity (category: Category) {
     switch (category.name) {
       case 'Proteinreich':
@@ -91,4 +99,11 @@ export class RecipesListComponent implements OnInit {
         return null;
     }
   };
+
+  getDashSeperatedTitle(recipe: Recipe) {
+    return recipe.title.replace(/([a-z])([A-Z])/g, "$1-$2")
+      .replace(/[\s_]+/g, '-')
+      .toLowerCase() + '-' + recipe.id;
+  }
+
 }

@@ -1,11 +1,13 @@
-<p-dataView #dv [value]="recipes" [rows]="5" [paginator]="true">
+<app-loading-spinner *ngIf="recipesLoading"></app-loading-spinner>
+
+<p-dataView *ngIf="!recipesLoading" #dv [value]="recipes" [rows]="5" [paginator]="true" emptyMessage="Keine Rezepte gefunden.">
   <ng-template let-recipe pTemplate="listItem">
     <div class="col-12">
       <div class="flex flex-column xl:flex-row xl:align-items-start p-4 gap-4">
-        <img class="w-9 sm:w-16rem xl:w-10rem shadow-2 block xl:block mx-auto border-round" [src]="recipe.imagePath" [alt]="recipe.title" />
+        <a [routerLink]="[this.getDashSeperatedTitle(recipe)]" (click)="navigateToRecipe(recipe)"><img class="w-9 sm:w-16rem xl:w-10rem shadow-2 block xl:block mx-auto border-round" [src]="recipe.imagePath" [alt]="recipe.title" /></a>
         <div class="flex flex-column sm:flex-row justify-content-between align-items-center xl:align-items-start flex-1 gap-4">
           <div class="flex flex-column align-items-center sm:align-items-start gap-3">
-            <div class="text-2xl font-bold text-900">{{ recipe.title }}</div>
+            <a [routerLink]="[this.getDashSeperatedTitle(recipe)]" (click)="navigateToRecipe(recipe)"><div class="text-2xl font-bold text-900">{{ recipe.title }}</div></a>
 
             <div class="flex align-items-center gap-3">
               <i class="pi pi-list"></i>
@@ -15,10 +17,7 @@
             </div>
 
 <!--            <p-rating [(ngModel)]="product.rating" [readonly]="true" [cancel]="false"></p-rating>-->
-            <div class="flex align-items-center gap-3">
-              <i class="pi pi-tag"></i>
-              <p-tag *ngFor="let category of recipe.categories" [value]="category.name" [severity]="getCategorySeverity(category)"></p-tag>
-            </div>
+            <app-categories-list [categories]="recipe.categories" [withIcon]="true"></app-categories-list>
           </div>
 <!--          <div class="flex flex-column">-->
           <div class="flex flex-column align-self-stretch justify-content-between gap-3">

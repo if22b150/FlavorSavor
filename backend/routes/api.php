@@ -27,7 +27,7 @@ Route::name('public.')->group(function() {
     // Ingredients
     Route::get('ingredients', [\App\Http\Controllers\IngredientController::class, 'index']);
     // Recipes
-    Route::get('recipes', [\App\Http\Controllers\RecipeController::class, 'index']);
+    Route::apiResource('recipes', \App\Http\Controllers\RecipeController::class)->only(['index', 'show']);
 });
 
 ///////////

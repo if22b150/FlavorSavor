@@ -5,6 +5,7 @@ import {RecipesViewComponent} from "./views/recipes-view/recipes-view.component"
 import {CookbookViewComponent} from "./views/cookbook-view/cookbook-view.component";
 import {AccountViewComponent} from "./views/account-view/account-view.component";
 import {UserGuard} from "../guards/user.guard";
+import {RecipeViewComponent} from "./views/recipe-view/recipe-view.component";
 
 const routes: Routes = [
   {
@@ -12,6 +13,7 @@ const routes: Routes = [
     component: FrontendComponent,
     children: [
       {path: 'recipes', component: RecipesViewComponent},
+      {path: 'recipes/:recipeUrl', component: RecipeViewComponent},
       {path: 'cookbook', component: CookbookViewComponent, canActivate: [UserGuard]},
       {path: 'account', component: AccountViewComponent, canActivate: [UserGuard]},
       {path: '', redirectTo: '/recipes', pathMatch: 'full'}

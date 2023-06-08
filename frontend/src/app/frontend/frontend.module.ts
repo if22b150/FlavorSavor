@@ -8,6 +8,10 @@ import {ButtonModule} from "primeng/button";
 import { CookbookViewComponent } from './views/cookbook-view/cookbook-view.component';
 import { AccountViewComponent } from './views/account-view/account-view.component';
 import { RecipesListComponent } from './components/recipes-list/recipes-list.component';
+import { RecipeViewComponent } from './views/recipe-view/recipe-view.component';
+import { CategoriesListComponent } from './components/categories-list/categories-list.component';
+import { LoadingSpinnerComponent } from './components/loading-spinner/loading-spinner.component';
+import { IngredientsTableComponent } from './components/ingredients-table/ingredients-table.component';
 
 
 
@@ -17,7 +21,11 @@ import { RecipesListComponent } from './components/recipes-list/recipes-list.com
     RecipesViewComponent,
     CookbookViewComponent,
     AccountViewComponent,
-    RecipesListComponent
+    RecipesListComponent,
+    RecipeViewComponent,
+    CategoriesListComponent,
+    LoadingSpinnerComponent,
+    IngredientsTableComponent
   ],
   imports: [
     CommonModule,

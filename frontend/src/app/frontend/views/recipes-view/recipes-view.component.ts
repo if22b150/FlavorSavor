@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {BreadcrumbService} from "../../../services/breadcrumb.service";
 
 @Component({
   selector: 'app-recipes-view',
@@ -7,9 +8,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class RecipesViewComponent implements OnInit {
 
-  constructor() { }
+  constructor(private breadcrumbService: BreadcrumbService) { }
 
   ngOnInit(): void {
+    this.breadcrumbService.breadcrumb = null;
   }
 
 }

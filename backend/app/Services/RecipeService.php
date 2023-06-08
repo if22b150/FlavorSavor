@@ -98,4 +98,12 @@ class RecipeService
 
         return new RecipeResource($recipe);
     }
+
+    public function get(int $id)
+    {
+        $recipe = $this->recipeRepository->get($id);
+        if(!$recipe)
+            return response('', 404);
+        return new RecipeResource($this->recipeRepository->get($id));
+    }
 }

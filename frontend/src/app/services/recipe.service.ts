@@ -14,4 +14,8 @@ export class RecipeService {
   public getAll(): Observable<Recipe[]> {
     return this.http.get<Recipe[]>(environment.apiUrl + 'recipes');
   }
+
+  public getOne(id: number): Observable<Recipe> {
+    return this.http.get<Recipe>(environment.apiUrl + `recipes/${id}`);
+  }
 }

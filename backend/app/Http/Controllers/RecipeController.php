@@ -17,4 +17,9 @@ class RecipeController extends Controller
     {
         return $this->recipeService->allVerified();
     }
+
+    public function show(int $recipeId)
+    {
+        return $this->recipeService->get($recipeId);
+    }
 }

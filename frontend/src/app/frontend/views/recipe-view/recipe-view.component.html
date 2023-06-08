@@ -1,0 +1,36 @@
+<app-loading-spinner *ngIf="loading"></app-loading-spinner>
+
+<div *ngIf="!loading && recipe">
+
+  <app-categories-list [categories]="recipe.categories" [withIcon]="false"></app-categories-list>
+
+  <div class="flex flex-wrap flex-column sm:flex-row align-items-center justify-content-between my-4">
+    <h1 class="m-0 sm:mr-4 text-center">{{recipe.title}}</h1>
+    <span><i class="pi pi-user-edit mr-2"></i> Erstellt von <a>{{recipe.user.username}}</a></span>
+  </div>
+
+  <div class="flex flex-column md:flex-row gap-3">
+
+    <p-fieldset [legend]="'Zutaten für ' + recipe.servings + (recipe.servings > 1 ? ' Portionen' : ' Portion')">
+      <app-ingredients-table [recipeIngredients]="recipe.ingredients"></app-ingredients-table>
+    </p-fieldset>
+
+    <p-fieldset legend="Zubereitung">
+      <p class="m-0">
+        <span>Dauer: ca. {{recipe.time}} min.</span>
+      </p>
+      <p-divider type="solid"></p-divider>
+      <div class="flex flex-column lg:flex-row gap-4">
+        <p class="m-0">
+          {{recipe.description}}
+        </p>
+
+        <p-image [src]="recipe.imagePath" [alt]="recipe.title" imageClass="max-w-15rem" [preview]="true"></p-image>
+      </div>
+    </p-fieldset>
+
+  </div>
+
+</div>
+
+

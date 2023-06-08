@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {MenuItem} from "primeng/api";
 import {AuthService} from "../services/auth/auth.service";
 import {User} from "../models/user.model";
+import {BreadcrumbService} from "../services/breadcrumb.service";
 
 @Component({
   selector: 'app-frontend',
@@ -11,7 +12,8 @@ import {User} from "../models/user.model";
 export class FrontendComponent implements OnInit {
   items: MenuItem[];
 
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService,
+              public breadcrumbService: BreadcrumbService) { }
 
   ngOnInit(): void {
     this.authService.user$.subscribe({
