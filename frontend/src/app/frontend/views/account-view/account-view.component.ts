@@ -1,20 +1,26 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {AuthService} from "../../../services/auth/auth.service";
 import {finalize} from "rxjs";
 import {MessageService} from "primeng/api";
 import {Router} from "@angular/router";
+import {BreadcrumbService} from "../../../services/breadcrumb.service";
 
 @Component({
   selector: 'app-account-view',
   templateUrl: './account-view.component.html',
   styleUrls: ['./account-view.component.scss']
 })
-export class AccountViewComponent {
+export class AccountViewComponent implements OnInit{
   logoutLoading: boolean;
 
   constructor(private authService: AuthService,
               private messageService: MessageService,
-              private router: Router) {
+              private router: Router,
+              private breadcrumbService: BreadcrumbService) {
+  }
+
+  ngOnInit() {
+    this.breadcrumbService.breadcrumb = null;
   }
 
   logout() {

@@ -35,9 +35,7 @@ class StoreRecipeRequest extends FormRequest
             'ingredients.*.id' => ['required', 'integer', 'exists:ingredients,id'],
             'ingredients.*.text' => ['required', 'string'],
 
-            'newIngredients' => ['present', 'array'],
-            'newIngredients.*.name' => ['required', 'string'],
-            'newIngredients.*.text' => ['required', 'string']
+            'newIngredients' => ['present', 'string']
         ];
     }
 }

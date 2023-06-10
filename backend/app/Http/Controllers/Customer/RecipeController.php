@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Recipe\StoreRecipeRequest;
 use App\Services\RecipeService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class RecipeController extends Controller
 {
@@ -23,6 +24,16 @@ class RecipeController extends Controller
 
     public function store(StoreRecipeRequest $request)
     {
+        $newIngredients = json_decode($request->newIngredients, true);
+        $rules = [
+            'newIngredients.*.name' => ['required', 'string'],
+            'newIngredients.*.text' => ['required', 'string']
+        ];
+        $validator = Validator::make($newIngredients, $rules);
+        if (!$validator->passes()) {
+            dd($validator->errors()->all());
+        }
+
         $data = [
             'recipe' => [
                 'title' => $request->title,
@@ -33,7 +44,7 @@ class RecipeController extends Controller
             ],
             'categoryIds' => $request->categoryIds,
             'ingredients' => $request->ingredients,
-            'newIngredients' => $request->newIngredients
+            'newIngredients' => $newIngredients
         ];
         return $this->recipeService->create($request->user()->id, $data);
     }

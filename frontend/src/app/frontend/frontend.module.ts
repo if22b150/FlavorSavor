@@ -12,6 +12,9 @@ import { RecipeViewComponent } from './views/recipe-view/recipe-view.component';
 import { CategoriesListComponent } from './components/categories-list/categories-list.component';
 import { LoadingSpinnerComponent } from './components/loading-spinner/loading-spinner.component';
 import { IngredientsTableComponent } from './components/ingredients-table/ingredients-table.component';
+import { MyRecipesViewComponent } from './views/my-recipes-view/my-recipes-view.component';
+import { CreateRecipeComponent } from './components/create-recipe/create-recipe.component';
+import {ReactiveFormsModule} from "@angular/forms";
 
 
 
@@ -25,13 +28,16 @@ import { IngredientsTableComponent } from './components/ingredients-table/ingred
     RecipeViewComponent,
     CategoriesListComponent,
     LoadingSpinnerComponent,
-    IngredientsTableComponent
+    IngredientsTableComponent,
+    MyRecipesViewComponent,
+    CreateRecipeComponent
   ],
   imports: [
     CommonModule,
     FrontendRoutingModule,
     PrimeNgModule,
-    ButtonModule
+    ButtonModule,
+    ReactiveFormsModule
   ]
 })
 export class FrontendModule { }

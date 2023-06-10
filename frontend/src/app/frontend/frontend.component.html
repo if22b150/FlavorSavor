@@ -6,7 +6,7 @@
   </ng-template>
 </p-menubar>
 
-<div class="surface-ground sm:p-6 sm:pt-3 p-3 min-h-screen">
+<div class="surface-ground sm:p-6 sm:pt-3 p-3 min-h-screen" [class.sm:pt-6]="!(breadcrumbService.breadcrumb$|async)">
 
   <p-button *ngIf="(breadcrumbService.breadcrumb$|async) as breadcrumb" pRipple label="Zurück" icon="pi pi-angle-left"
             styleClass="p-button-outlined p-button-secondary mb-3" [routerLink]="[breadcrumb.link]"></p-button>

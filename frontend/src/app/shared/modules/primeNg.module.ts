@@ -18,6 +18,11 @@ import { FieldsetModule } from 'primeng/fieldset';
 import {TableModule} from "primeng/table";
 import { DividerModule } from 'primeng/divider';
 import { ImageModule } from 'primeng/image';
+import {DialogModule} from "primeng/dialog";
+import {InputTextareaModule} from "primeng/inputtextarea";
+import {InputNumberModule} from "primeng/inputnumber";
+import {FileUploadModule} from "primeng/fileupload";
+import {MultiSelectModule} from "primeng/multiselect";
 
 
 @NgModule({
@@ -45,7 +50,12 @@ import { ImageModule } from 'primeng/image';
     FieldsetModule,
     TableModule,
     DividerModule,
-    ImageModule
+    ImageModule,
+    DialogModule,
+    InputTextareaModule,
+    InputNumberModule,
+    FileUploadModule,
+    MultiSelectModule
   ]
 })
 export class PrimeNgModule { }

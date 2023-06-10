@@ -1,0 +1,100 @@
+
+
+<div class="card flex justify-content-center">
+  <p-button  (click)="openDialog()" pRipple label="Rezept erstellen" icon="pi pi-plus"
+            styleClass="p-button-primary"></p-button>
+
+  <p-dialog header="Rezept erstellen" [(visible)]="visible" [modal]="true" [style]="{ width: '50vw' }" [draggable]="false" [resizable]="false" (onHide)="closeDialog()">
+    <form [formGroup]="createRecipeForm">
+
+      <div class="mb-4">
+        <label for="title" class="block text-900 font-medium mb-2">Titel</label>
+        <input id="title" formControlName="title" type="text" placeholder="Rezept-Titel" pInputText pAutoFocus [autofocus]="true" class="w-full">
+
+        <div style="position: relative">
+          <small style="position: absolute" *ngIf="title.hasError('required') && (title.touched || submitted)">Titel ist erforderlich</small>
+        </div>
+      </div>
+
+      <div class="mb-4">
+        <label for="description" class="block text-900 font-medium mb-2">Zubereitung</label>
+        <textarea id="description" rows="5" cols="30" pInputTextarea formControlName="description" class="w-full"></textarea>
+
+        <div style="position: relative">
+          <small style="position: absolute" *ngIf="description.hasError('required') && (description.touched || submitted)">Zubereitung ist erforderlich</small>
+        </div>
+      </div>
+
+      <div class="mb-4 w-full">
+        <label for="time" type="number" class="block text-900 font-medium mb-2">Zubereitungszeit (in Minuten)</label>
+        <p-inputNumber inputId="time" formControlName="time" placeholder="Zubereitungszeit" class="w-full" styleClass="w-full" inputStyleClass="w-full"></p-inputNumber>
+
+        <div style="position: relative">
+          <small style="position: absolute" *ngIf="time.hasError('min') && (time.touched || submitted)">Zubereitungszeit muss mind. 1 sein</small>
+          <small style="position: absolute" *ngIf="time.hasError('required') && (time.touched || submitted)">Zubereitungszeit ist erforderlich</small>
+        </div>
+      </div>
+
+      <div class="mb-4">
+        <label for="servings" class="block text-900 font-medium mb-2">Portionen</label>
+        <p-inputNumber inputId="servings" formControlName="servings" placeholder="Anzahl der Portionen" class="w-full" styleClass="w-full" inputStyleClass="w-full"></p-inputNumber>
+
+        <div style="position: relative">
+          <small style="position: absolute" *ngIf="servings.hasError('min') && (servings.touched || submitted)">Portionen muss mind. 1 sein</small>
+          <small style="position: absolute" *ngIf="servings.hasError('required') && (servings.touched || submitted)">Portionen ist erforderlich</small>
+        </div>
+      </div>
+
+      <div class="mb-4">
+        <label for="image" class="block text-900 font-medium mb-2">Bild</label>
+        <p-fileUpload mode="basic" accept="image/*" chooseStyleClass="p-button-outlined"
+          [customUpload]="true" [maxFileSize]="2000000" (uploadHandler)="onImageUpload($event)"
+          [auto]="true" [chooseLabel]="image ? image.name : 'Auswählen'"></p-fileUpload>
+
+        <div style="position: relative">
+          <small style="position: absolute" *ngIf="!image && submitted">Ein Bild ist erforderlich</small>
+        </div>
+      </div>
+
+      <div *ngIf="(ingredientService.ingredients$|async) as ingredientsArr">
+        <label for="ingredients" class="block text-900 font-medium mb-2">Zutaten</label>
+        <p-multiSelect inputId="ingredients" [options]="ingredientsArr" formControlName="selectedIngredients"
+          defaultLabel="Wähle Zutaten" optionLabel="name" display="chip" (onChange)="initIngredientsGroup($event)" class="w-full" styleClass="w-full" inputStyleClass="w-full"></p-multiSelect>
+
+        <div style="position: relative">
+          <small style="position: absolute" *ngIf="selectedIngredients.hasError('required') && (ingredients.touched || submitted)">Zutaten sind erforderlich</small>
+        </div>
+      </div>
+      <div class="mb-4 mt-2" formArrayName="ingredients">
+        <label class="block text-900 font-medium mb-2" *ngIf="ingredients.controls.length > 0">Mengenbeschreibung für Zutaten</label>
+        <div class="flex flex-wrap">
+          <div class="mb-4 mr-4" *ngFor="let ingredient of ingredients.controls; let i = index" [formGroupName]="i">
+            <input formControlName="ingredient" type="hidden">
+            <span class="mr-2">{{getSelectedIngredientByIndex(i).name}}</span>
+            <input [id]="'text-'+i" formControlName="text" type="text" placeholder="z.B.: 2 TL" pInputText>
+
+            <div style="position: relative">
+              <small style="position: absolute" *ngIf="ingredients.at(i).get('text').hasError('required') && (ingredients.at(i).get('text').touched || submitted)">Mengenbeschreibung ist erforderlich</small>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="mb-4" *ngIf="(categoryService.categories$|async) as categoriesArr">
+        <label for="categories" class="block text-900 font-medium mb-2">Kategorien</label>
+        <p-multiSelect inputId="categories" [options]="categoriesArr" formControlName="categories"
+                       defaultLabel="Wähle Kategorien" optionLabel="name" display="chip" class="w-full" styleClass="w-full" inputStyleClass="w-full"></p-multiSelect>
+
+        <div style="position: relative">
+          <small style="position: absolute" *ngIf="categories.hasError('required') && (categories.touched || submitted)">Kategorien sind erforderlich</small>
+        </div>
+      </div>
+
+      <div class="flex justify-content-end">
+        <p-button  (click)="submit()" pRipple label="Erstellen" [loading]="loading"
+                   styleClass="p-button-primary"></p-button>
+      </div>
+
+    </form>
+  </p-dialog>
+</div>

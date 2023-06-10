@@ -12,8 +12,14 @@ export class CategoriesListComponent {
 
   getCategorySeverity (category: Category) {
     switch (category.name) {
-      case 'Proteinreich':
+      case 'Low Carb':
         return 'warning';
+      case 'Scharf':
+        return 'danger';
+      case 'Vegetarisch':
+        return null;
+      case 'Vegan':
+        return 'success';
       // case 'LOWSTOCK':
       //   return 'warning';
       //

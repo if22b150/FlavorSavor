@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import {BreadcrumbService} from "../../../services/breadcrumb.service";
 
 @Component({
   selector: 'app-cookbook-view',
@@ -6,5 +7,10 @@ import { Component } from '@angular/core';
   styleUrls: ['./cookbook-view.component.scss']
 })
 export class CookbookViewComponent {
+  constructor(private breadcrumbService: BreadcrumbService) {
+  }
 
+  ngOnInit() {
+    this.breadcrumbService.breadcrumb = null;
+  }
 }

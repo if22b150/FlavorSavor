@@ -1,0 +1,9 @@
+<app-loading-spinner *ngIf="recipeService.loading$|async"></app-loading-spinner>
+
+<ng-container *ngIf="!(recipeService.loading$|async)">
+  <div class="flex justify-content-end mb-4">
+    <app-create-recipe></app-create-recipe>
+  </div>
+
+  <app-recipes-list [recipes]="(recipeService.recipes$|async).recipes"></app-recipes-list>
+</ng-container>

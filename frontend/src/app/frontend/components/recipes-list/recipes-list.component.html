@@ -1,5 +1,3 @@
-<app-loading-spinner *ngIf="recipesLoading"></app-loading-spinner>
-
 <p-dataView *ngIf="!recipesLoading" #dv [value]="recipes" [rows]="5" [paginator]="true" emptyMessage="Keine Rezepte gefunden.">
   <ng-template let-recipe pTemplate="listItem">
     <div class="col-12">
