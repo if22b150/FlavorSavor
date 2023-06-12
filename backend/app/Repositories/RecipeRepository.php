@@ -62,4 +62,9 @@ class RecipeRepository implements RecipeRepositoryInterface
     {
         return Recipe::where('id', $id)->exists();
     }
+
+    public function belongsToUser(int $recipeId, int $userId): bool
+    {
+        return $this->get($recipeId)->user_id == $userId;
+    }
 }

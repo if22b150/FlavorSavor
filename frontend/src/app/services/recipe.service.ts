@@ -62,4 +62,8 @@ export class RecipeService {
   public create(data: FormData): Observable<Recipe> {
     return this.http.post<Recipe>(environment.apiUrl + 'customer/recipes', data, {headers: this._headers});
   }
+
+  public delete(id: number): Observable<any> {
+    return this.http.delete<any>(environment.apiUrl + `customer/recipes/${id}`);
+  }
 }

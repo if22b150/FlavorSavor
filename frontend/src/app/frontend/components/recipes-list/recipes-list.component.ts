@@ -15,6 +15,7 @@ import {BreadcrumbService} from "../../../services/breadcrumb.service";
 export class RecipesListComponent implements OnInit {
   @Input() recipes: Recipe[];
   recipesLoading: boolean;
+  @Input() isMyRecipes: boolean;
 
   constructor(public recipeService: RecipeService,
               private router: Router,
@@ -26,7 +27,7 @@ export class RecipesListComponent implements OnInit {
   }
 
   navigateToRecipe(recipe: Recipe) {
-    this.breadcrumbService.breadcrumb = {link: '/recipes', text: 'Alle Rezepte'};
+    this.breadcrumbService.breadcrumb = this.isMyRecipes ? {link: '/my-recipes', text: 'Meine Rezepte'} : {link: '/recipes', text: 'Alle Rezepte'};
   }
 
   getCategorySeverity (category: Category) {
@@ -47,7 +48,7 @@ export class RecipesListComponent implements OnInit {
   };
 
   getDashSeperatedTitle(recipe: Recipe) {
-    return recipe.title.replace(/([a-z])([A-Z])/g, "$1-$2")
+    return '/recipes/' + recipe.title.replace(/([a-z])([A-Z])/g, "$1-$2")
       .replace(/[\s_]+/g, '-')
       .toLowerCase() + '-' + recipe.id;
   }

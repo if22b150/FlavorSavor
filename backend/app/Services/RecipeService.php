@@ -106,4 +106,10 @@ class RecipeService
             return response('', 404);
         return new RecipeResource($this->recipeRepository->get($id));
     }
+
+    public function delete(int $id)
+    {
+        $this->recipeRepository->delete($id);
+        return response("", 204);
+    }
 }

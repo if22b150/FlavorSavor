@@ -51,4 +51,8 @@ class RecipeController extends Controller
 
     public function update() {
     }
+
+    public function destroy(int $recipeId) {
+        return $this->recipeService->delete($recipeId);
+    }
 }

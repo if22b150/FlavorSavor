@@ -6,7 +6,7 @@ import {ButtonModule} from "primeng/button";
 import {RippleModule} from "primeng/ripple";
 import {BtnLoadingDirective} from "../directives/btn-loading.directive";
 import {TagModule} from "primeng/tag";
-import {MessageService} from "primeng/api";
+import {ConfirmationService, MessageService} from "primeng/api";
 import {ToastModule} from "primeng/toast";
 import { DataViewModule } from 'primeng/dataview';
 import {PasswordModule} from "primeng/password";
@@ -23,11 +23,13 @@ import {InputTextareaModule} from "primeng/inputtextarea";
 import {InputNumberModule} from "primeng/inputnumber";
 import {FileUploadModule} from "primeng/fileupload";
 import {MultiSelectModule} from "primeng/multiselect";
+import {ConfirmPopupModule} from "primeng/confirmpopup";
 
 
 @NgModule({
   providers: [
-    MessageService
+    MessageService,
+    ConfirmationService
   ],
   declarations: [
     BtnLoadingDirective
@@ -55,7 +57,8 @@ import {MultiSelectModule} from "primeng/multiselect";
     InputTextareaModule,
     InputNumberModule,
     FileUploadModule,
-    MultiSelectModule
+    MultiSelectModule,
+    ConfirmPopupModule
   ]
 })
 export class PrimeNgModule { }

@@ -57,6 +57,11 @@ export class FrontendComponent implements OnInit {
         } else {
           this.items = [
             {
+              label: 'Rezepte durchsuchen',
+              icon: 'pi pi-fw pi-search',
+              routerLink: '/recipes',
+            },
+            {
               label: 'Login',
               icon: 'pi pi-fw pi-sign-in',
               routerLink: '/auth/login'

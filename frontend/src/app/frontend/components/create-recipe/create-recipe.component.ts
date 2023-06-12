@@ -101,6 +101,10 @@ export class CreateRecipeComponent implements OnInit {
           this.messageService.add({ severity: 'success', summary: 'Erfolgreich', detail: 'Das Rezept wurde erstellt.' });
           this.closeDialog();
           this.recipeService.getAllByCustomer(this.authService.user.id);
+        },
+        error: (err) => {
+         console.log(err);
+         this.messageService.add({ severity: 'danger', summary: 'Fehler', detail: 'Das Rezept konnte nicht erstellt.' });
         }
       })
   }

@@ -31,6 +31,17 @@
 
   </div>
 
+  <ng-container *ngIf="isMyRecipe">
+    <div class="flex justify-content-end mt-4 gap-2">
+      <p-button  (click)="edit()" pRipple label="Rezept bearbeiten" icon="pi pi-pencil"
+                 styleClass="p-button-secondary"[loading]="buttonLoading"></p-button>
+
+      <p-button  (click)="delete($event)" pRipple label="Rezept löschen" icon="pi pi-trash"
+                 styleClass="p-button-danger" [loading]="buttonLoading"></p-button>
+      <p-confirmPopup></p-confirmPopup>
+    </div>
+  </ng-container>
+
 </div>
 
 
