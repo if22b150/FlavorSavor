@@ -45,5 +45,9 @@ Route::prefix('admin')->name('admin.')->middleware(['auth:sanctum', 'verified', 
 Route::prefix('customer')->name('customer.')->middleware(['auth:sanctum', 'auth.customer'])->group(function () {
     // Recipes
     Route::apiResource('recipes', \App\Http\Controllers\Customer\RecipeController::class);
+
+    Route::get('saved-recipes', [\App\Http\Controllers\Customer\RecipeController::class, 'getSaved']);
+    Route::post('saved-recipes/{recipeId}', [\App\Http\Controllers\Customer\RecipeController::class, 'addToSaved']);
+    Route::delete('saved-recipes/{recipeId}', [\App\Http\Controllers\Customer\RecipeController::class, 'removeFromSaved']);
 });
 

@@ -13,4 +13,5 @@ export interface Recipe extends AModel{
   user: User;
   ingredients: RecipeIngredient[];
   categories: Ingredient[];
+  saved?: boolean;
 }

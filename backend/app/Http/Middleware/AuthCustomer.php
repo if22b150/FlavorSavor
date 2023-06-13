@@ -38,7 +38,7 @@ class AuthCustomer
         if ($recipeId && !$this->recipeRepository->exists($recipeId))
             return response('Recipe does not exist', 404);
 
-        if ($recipeId && $userId && !$this->recipeRepository->belongsToUser($recipeId, $userId))
+        if ($recipeId && $userId && !str_contains($request->path(), 'saved-recipes') && !$this->recipeRepository->belongsToUser($recipeId, $userId))
             return response('Recipe does not belong to the user', 403);
 
         return $next($request);

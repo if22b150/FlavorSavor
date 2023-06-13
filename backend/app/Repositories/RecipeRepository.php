@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\Recipe;
+use App\Models\UserRecipe;
 use App\Repositories\Interfaces\RecipeRepositoryInterface;
 
 class RecipeRepository implements RecipeRepositoryInterface
@@ -66,5 +67,19 @@ class RecipeRepository implements RecipeRepositoryInterface
     public function belongsToUser(int $recipeId, int $userId): bool
     {
         return $this->get($recipeId)->user_id == $userId;
+    }
+
+    public function createUserRecipe(array $data)
+    {
+        $userRecipe = new UserRecipe([
+            'recipe_id' => $data['recipe_id'],
+            'user_id' => $data['user_id']
+        ]);
+        return $userRecipe->save() ? $userRecipe : null;
+    }
+
+    public function deleteUserRecipe(array $data)
+    {
+        return UserRecipe::where('recipe_id', $data['recipe_id'])->where('user_id', $data['user_id'])->delete();
     }
 }

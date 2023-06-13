@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\User;
+use App\Models\UserRecipe;
 use App\Repositories\Interfaces\UserRepositoryInterface;
 use Illuminate\Support\Facades\Hash;
 
@@ -60,5 +61,10 @@ class UserRepository implements UserRepositoryInterface
     public function exists(int $id): bool
     {
         return User::where('id', $id)->exists();
+    }
+
+    public function isSavedRecipe(int $recipeId, int $userId): bool
+    {
+        return UserRecipe::where('recipe_id', $recipeId)->where('user_id', $userId)->get()->count() > 0;
     }
 }

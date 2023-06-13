@@ -104,7 +104,7 @@ export class CreateRecipeComponent implements OnInit {
         },
         error: (err) => {
          console.log(err);
-         this.messageService.add({ severity: 'danger', summary: 'Fehler', detail: 'Das Rezept konnte nicht erstellt.' });
+         this.messageService.add({ severity: 'error', summary: 'Fehler', detail: 'Das Rezept konnte nicht erstellt.' });
         }
       })
   }

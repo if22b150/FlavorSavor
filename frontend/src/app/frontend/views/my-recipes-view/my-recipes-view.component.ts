@@ -2,7 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {BreadcrumbService} from "../../../services/breadcrumb.service";
 import {Recipe} from "../../../models/recipe.model";
 import {RecipeService} from "../../../services/recipe.service";
-import {finalize} from "rxjs";
 import {AuthService} from "../../../services/auth/auth.service";
 
 @Component({

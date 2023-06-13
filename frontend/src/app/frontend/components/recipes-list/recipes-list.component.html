@@ -5,7 +5,14 @@
         <a [routerLink]="[this.getDashSeperatedTitle(recipe)]" (click)="navigateToRecipe(recipe)"><img class="w-9 sm:w-16rem xl:w-10rem shadow-2 block xl:block mx-auto border-round" [src]="recipe.imagePath" [alt]="recipe.title" /></a>
         <div class="flex flex-column sm:flex-row justify-content-between align-items-center xl:align-items-start flex-1 gap-4">
           <div class="flex flex-column align-items-center sm:align-items-start gap-3">
-            <a [routerLink]="[this.getDashSeperatedTitle(recipe)]" (click)="navigateToRecipe(recipe)"><div class="text-2xl font-bold text-900">{{ recipe.title }}</div></a>
+
+            <div class="flex text-center flex-column sm:flex-row align-items-center gap-2">
+              <a [routerLink]="[this.getDashSeperatedTitle(recipe)]" (click)="navigateToRecipe(recipe)">
+                <div class="text-2xl font-bold text-900">{{ recipe.title }}</div>
+              </a>
+
+              <app-cookbook-star *ngIf="!isMyRecipes && authService.user" [recipe]="recipe"></app-cookbook-star>
+            </div>
 
             <div class="flex align-items-center gap-3">
               <i class="pi pi-list"></i>

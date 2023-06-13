@@ -2,9 +2,13 @@
 
 namespace App\Services;
 
+use App\Http\Controllers\Customer\RecipeController;
 use App\Http\Resources\IngredientResource;
 use App\Http\Resources\RecipeResource;
 use App\Repositories\Interfaces\IngredientRepositoryInterface;
+use App\Repositories\Interfaces\RecipeIngredientRepositoryInterface;
+use App\Repositories\Interfaces\RecipeRepositoryInterface;
+use App\Repositories\Interfaces\UserRepositoryInterface;
 use App\Repositories\RecipeIngredientRepository;
 use App\Repositories\RecipeRepository;
 use Exception;
@@ -13,16 +17,19 @@ use Illuminate\Database\Eloquent\Collection;
 class RecipeService
 {
     protected IngredientRepositoryInterface $ingredientRepository;
-    protected RecipeIngredientRepository $recipeIngredientRepository;
-    protected RecipeRepository $recipeRepository;
+    protected RecipeIngredientRepositoryInterface $recipeIngredientRepository;
+    protected RecipeRepositoryInterface $recipeRepository;
+    protected UserRepositoryInterface $userRepository;
 
     public function __construct(IngredientRepositoryInterface   $ingredientRepository,
-                                RecipeRepository                $recipeRepository,
-                                RecipeIngredientRepository      $recipeIngredientRepository)
+                                RecipeRepositoryInterface                $recipeRepository,
+                                RecipeIngredientRepositoryInterface      $recipeIngredientRepository,
+                                UserRepositoryInterface $userRepository)
     {
         $this->ingredientRepository = $ingredientRepository;
         $this->recipeRepository = $recipeRepository;
         $this->recipeIngredientRepository = $recipeIngredientRepository;
+        $this->userRepository = $userRepository;
     }
 
     public function all()
@@ -111,5 +118,34 @@ class RecipeService
     {
         $this->recipeRepository->delete($id);
         return response("", 204);
+    }
+
+    public function getSaved(int $user_id)
+    {
+        $user = $this->userRepository->get($user_id);
+        return RecipeResource::collection($user->savedRecipes);
+    }
+
+    public function addSaved(int $user_id, int $recipeId)
+    {
+        $user = $this->userRepository->get($user_id);
+        try {
+            $userRecipe = $this->recipeRepository->createUserRecipe(['user_id' => $user_id, 'recipe_id' => $recipeId]);
+            if(!$userRecipe)
+                throw new Exception("Create userRecipe error");
+        }  catch (Exception $e) {
+            return response("User-Rezept-Beziehung konnte nicht angelegt werden. " . $e->getMessage(), 500);
+        }
+
+        return RecipeResource::collection($user->savedRecipes);
+    }
+
+    public function removeSaved(int $user_id, int $recipeId)
+    {
+        $user = $this->userRepository->get($user_id);
+
+        $this->recipeRepository->deleteUserRecipe(['user_id' => $user_id, 'recipe_id' => $recipeId]);
+
+        return RecipeResource::collection($user->savedRecipes);
     }
 }

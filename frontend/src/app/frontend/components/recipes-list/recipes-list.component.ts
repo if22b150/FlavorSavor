@@ -5,6 +5,9 @@ import {RecipeService} from "../../../services/recipe.service";
 import {finalize} from "rxjs";
 import {Router} from "@angular/router";
 import {BreadcrumbService} from "../../../services/breadcrumb.service";
+import {AuthService} from "../../../services/auth/auth.service";
+import {CookbookService} from "../../../services/cookbook.service";
+import {MessageService} from "primeng/api";
 
 
 @Component({
@@ -15,11 +18,15 @@ import {BreadcrumbService} from "../../../services/breadcrumb.service";
 export class RecipesListComponent implements OnInit {
   @Input() recipes: Recipe[];
   recipesLoading: boolean;
-  @Input() isMyRecipes: boolean;
+  @Input() isMyRecipes: boolean = false;
+  @Input() isSavedRecipes: boolean = false;
 
   constructor(public recipeService: RecipeService,
               private router: Router,
-              private breadcrumbService: BreadcrumbService) {
+              private breadcrumbService: BreadcrumbService,
+              public authService: AuthService,
+              private cookbookService: CookbookService,
+              private messageService: MessageService) {
 
   }
 
@@ -27,7 +34,7 @@ export class RecipesListComponent implements OnInit {
   }
 
   navigateToRecipe(recipe: Recipe) {
-    this.breadcrumbService.breadcrumb = this.isMyRecipes ? {link: '/my-recipes', text: 'Meine Rezepte'} : {link: '/recipes', text: 'Alle Rezepte'};
+    this.breadcrumbService.breadcrumb = this.isMyRecipes ? {link: '/my-recipes', text: 'Meine Rezepte'} : (this.isSavedRecipes ? {link: '/cookbook', text: 'Mein Kochbuch'} : {link: '/recipes', text: 'Alle Rezepte'});
   }
 
   getCategorySeverity (category: Category) {

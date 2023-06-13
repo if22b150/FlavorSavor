@@ -4,8 +4,13 @@
 
   <app-categories-list [categories]="recipe.categories" [withIcon]="false"></app-categories-list>
 
-  <div class="flex flex-wrap flex-column sm:flex-row align-items-center justify-content-between my-4">
-    <h1 class="m-0 sm:mr-4 text-center">{{recipe.title}}</h1>
+  <div class="flex flex-wrap flex-column sm:flex-row align-items-center justify-content-between my-4 gap-4">
+
+    <div class="flex text-center flex-column sm:flex-row align-items-center gap-4">
+      <h1 class="m-0 text-center">{{recipe.title}}</h1>
+      <app-cookbook-star *ngIf="!isMyRecipe && authService.user" [recipe]="recipe"></app-cookbook-star>
+    </div>
+
     <span><i class="pi pi-user-edit mr-2"></i> Erstellt von <a>{{recipe.user.username}}</a></span>
   </div>
 

@@ -55,4 +55,17 @@ class RecipeController extends Controller
     public function destroy(int $recipeId) {
         return $this->recipeService->delete($recipeId);
     }
+
+    public function getSaved(Request $request)
+    {
+        return $this->recipeService->getSaved($request->user()->id);
+    }
+
+    public function addToSaved(Request $request, int $recipeId) {
+        return $this->recipeService->addSaved($request->user()->id, $recipeId);
+    }
+
+    public function removeFromSaved(Request $request, int $recipeId) {
+        return $this->recipeService->removeSaved($request->user()->id, $recipeId);
+    }
 }

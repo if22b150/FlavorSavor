@@ -23,7 +23,7 @@ export class RecipeViewComponent implements OnInit {
               private messageService: MessageService,
               private recipeService: RecipeService,
               private breadcrumbService: BreadcrumbService,
-              private authService: AuthService,
+              public authService: AuthService,
               private confirmationService: ConfirmationService) {
   }
 

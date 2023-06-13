@@ -15,6 +15,7 @@ import { IngredientsTableComponent } from './components/ingredients-table/ingred
 import { MyRecipesViewComponent } from './views/my-recipes-view/my-recipes-view.component';
 import { CreateRecipeComponent } from './components/create-recipe/create-recipe.component';
 import {ReactiveFormsModule} from "@angular/forms";
+import { CookbookStarComponent } from './components/cookbook-star/cookbook-star.component';
 
 
 
@@ -30,7 +31,8 @@ import {ReactiveFormsModule} from "@angular/forms";
     LoadingSpinnerComponent,
     IngredientsTableComponent,
     MyRecipesViewComponent,
-    CreateRecipeComponent
+    CreateRecipeComponent,
+    CookbookStarComponent
   ],
   imports: [
     CommonModule,
