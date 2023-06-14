@@ -55,12 +55,21 @@ export class RecipeService {
       });
   }
 
+  public getSearch(search: string): Observable<Recipe[]> {
+    return this.http.get<Recipe[]>(environment.apiUrl + `recipes?title=${search}`);
+  }
+
   public getOne(id: number): Observable<Recipe> {
     return this.http.get<Recipe>(environment.apiUrl + `recipes/${id}`);
   }
 
   public create(data: FormData): Observable<Recipe> {
     return this.http.post<Recipe>(environment.apiUrl + 'customer/recipes', data, {headers: this._headers});
+  }
+
+  public update(id: number, data: FormData): Observable<Recipe> {
+    // post because of formdata, not possible with put
+    return this.http.post<Recipe>(environment.apiUrl + `customer/recipes/${id}`, data, {headers: this._headers});
   }
 
   public delete(id: number): Observable<any> {

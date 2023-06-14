@@ -1,4 +1,4 @@
-<div class="flex align-items-center gap-3">
+<div class="flex align-items-center" [ngClass]="['gap-'+gap]">
   <i *ngIf="withIcon" class="pi pi-tag"></i>
-  <p-tag *ngFor="let category of categories" [value]="category.name" [severity]="getCategorySeverity(category)"></p-tag>
+  <p-tag *ngFor="let category of categories" [rounded]="rounded" [value]="category.name" [severity]="getCategorySeverity(category)"></p-tag>
 </div>

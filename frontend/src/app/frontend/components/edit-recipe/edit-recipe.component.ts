@@ -1,20 +1,22 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {AbstractControl, FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {IngredientService} from "../../../services/ingredient.service";
-import {Ingredient} from "../../../models/ingredient.model";
 import {CategoryService} from "../../../services/category.service";
 import {RecipeService} from "../../../services/recipe.service";
-import {finalize} from "rxjs";
 import {MessageService} from "primeng/api";
 import {AuthService} from "../../../services/auth/auth.service";
+import {finalize} from "rxjs";
+import {Ingredient} from "../../../models/ingredient.model";
+import {Recipe} from "../../../models/recipe.model";
 
 @Component({
-  selector: 'app-create-recipe',
-  templateUrl: './create-recipe.component.html',
-  styleUrls: ['./create-recipe.component.scss']
+  selector: 'app-edit-recipe',
+  templateUrl: './edit-recipe.component.html',
+  styleUrls: ['./edit-recipe.component.scss']
 })
-export class CreateRecipeComponent implements OnInit {
-  createRecipeForm: FormGroup;
+export class EditRecipeComponent {
+  @Input() recipe: Recipe;
+  editRecipeForm: FormGroup;
   visible: boolean;
   submitted: boolean;
   loading: boolean;
@@ -29,17 +31,29 @@ export class CreateRecipeComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.createRecipeForm = this.formBuilder.group({
-      title: [null, [Validators.required]],
-      description: [null, [Validators.required]],
-      time: [null, [Validators.required, Validators.min(1)]],
-      servings: [null, [Validators.required, Validators.min(1)]],
-      selectedIngredients: [[], Validators.required],
+    console.log(this.recipe)
+    let recipeSelectedIngredients = [];
+    let recipeIngredients = [];
+    this.recipe.ingredients.forEach(i => {
+      let ingredient = {
+        id: i.ingredientId,
+        name: i.ingredientName
+      };
+      recipeSelectedIngredients.push(ingredient);
+      recipeIngredients.push(this.createIngredientFormGroup(ingredient, i.text));
+    });
+
+    this.editRecipeForm = this.formBuilder.group({
+      title: [this.recipe.title, [Validators.required]],
+      description: [this.recipe.description, [Validators.required]],
+      time: [this.recipe.time, [Validators.required, Validators.min(1)]],
+      servings: [this.recipe.servings, [Validators.required, Validators.min(1)]],
+      selectedIngredients: [recipeSelectedIngredients, Validators.required],
       ingredients: this.formBuilder.array(
-        [],
+        recipeIngredients,
         [Validators.required]
       ),
-      categories: [[], Validators.required]
+      categories: [this.recipe.categories, Validators.required]
     });
   }
 
@@ -49,10 +63,9 @@ export class CreateRecipeComponent implements OnInit {
 
   closeDialog() {
     this.visible = false;
-    this.ingredients.clear();
-    this.createRecipeForm.reset();
-    this.image = null;
-
+    // this.ingredients.clear();
+    // this.editRecipeForm.reset();
+    // this.image = null;
   }
 
   onImageUpload(e) {
@@ -61,7 +74,7 @@ export class CreateRecipeComponent implements OnInit {
 
   submit() {
     this.submitted = true;
-    if(this.createRecipeForm.invalid || !this.image)
+    if (this.editRecipeForm.invalid || !this.image)
       return;
 
     this.loading = true;
@@ -90,25 +103,25 @@ export class CreateRecipeComponent implements OnInit {
     })
     data.append('newIngredients', JSON.stringify([]));
 
-    this.recipeService.create(data)
+    this.recipeService.update(this.recipe.id, data)
       .pipe(finalize(() => this.loading = false))
       .subscribe({
         next: () => {
-          this.messageService.add({ severity: 'success', summary: 'Erfolgreich', detail: 'Das Rezept wurde erstellt.' });
+          this.messageService.add({severity: 'success', summary: 'Erfolgreich', detail: 'Das Rezept wurde bearbeitet.'});
           this.closeDialog();
           this.recipeService.getAllByCustomer(this.authService.user.id);
         },
         error: (err) => {
-         console.log(err);
-         this.messageService.add({ severity: 'error', summary: 'Fehler', detail: 'Das Rezept konnte nicht erstellt.' });
+          console.log(err);
+          this.messageService.add({severity: 'error', summary: 'Fehler', detail: 'Das Rezept konnte nicht bearbeitet.'});
         }
       })
   }
 
-  createIngredientFormGroup(ingredient: Ingredient) {
+  createIngredientFormGroup(ingredient: Ingredient, text?: string) {
     return this.formBuilder.group({
       ingredient: [ingredient],
-      text: [null, [Validators.required]],
+      text: [text, [Validators.required]],
     })
   }
 
@@ -116,7 +129,7 @@ export class CreateRecipeComponent implements OnInit {
     let id = e.itemValue.id;
     let newIds = e.value.map(i => i.id);
     let add = newIds.indexOf(id) !== -1;
-    if(add) {
+    if (add) {
       this.ingredients.push(this.createIngredientFormGroup(e.itemValue));
     } else {
       const index = this.ingredients.value.findIndex(ing => ing.ingredient.id === id)
@@ -124,29 +137,35 @@ export class CreateRecipeComponent implements OnInit {
     }
   }
 
-  getSelectedIngredientByIndex(i:number) {
+  getSelectedIngredientByIndex(i: number) {
     return this.selectedIngredients.value[i];
   }
 
   get title(): AbstractControl {
-    return this.createRecipeForm.get('title');
+    return this.editRecipeForm.get('title');
   }
+
   get description(): AbstractControl {
-    return this.createRecipeForm.get('description');
+    return this.editRecipeForm.get('description');
   }
+
   get time(): AbstractControl {
-    return this.createRecipeForm.get('time');
+    return this.editRecipeForm.get('time');
   }
+
   get servings(): AbstractControl {
-    return this.createRecipeForm.get('servings');
+    return this.editRecipeForm.get('servings');
   }
+
   get selectedIngredients(): AbstractControl {
-    return this.createRecipeForm.get('selectedIngredients');
+    return this.editRecipeForm.get('selectedIngredients');
   }
+
   get ingredients(): FormArray {
-    return this.createRecipeForm.get('ingredients') as FormArray;
+    return this.editRecipeForm.get('ingredients') as FormArray;
   }
+
   get categories(): AbstractControl {
-    return this.createRecipeForm.get('categories');
+    return this.editRecipeForm.get('categories');
   }
 }

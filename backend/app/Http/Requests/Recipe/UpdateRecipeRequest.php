@@ -28,12 +28,12 @@ class UpdateRecipeRequest extends FormRequest
             'servings' => ['required', 'integer'],
             'image' => ['nullable', 'image'],
 
-//            'categoryIds' => ['present', 'array'],
-//            'categoryIds.*' => ['required', 'integer', 'exists:categories,id'],
-//
-//            'ingredients' => ['present', 'array'],
-//            'ingredients.*.id' => ['required', 'integer', 'exists:ingredients,id'],
-//            'ingredients.*.text' => ['required', 'string'],
+            'categoryIds' => ['present', 'array'],
+            'categoryIds.*' => ['required', 'integer', 'exists:categories,id'],
+
+            'ingredients' => ['present', 'array'],
+            'ingredients.*.id' => ['required', 'integer', 'exists:ingredients,id'],
+            'ingredients.*.text' => ['required', 'string'],
 //
 //            'newIngredients' => ['present', 'array'],
 //            'newIngredients.*.name' => ['required', 'string'],

@@ -9,6 +9,8 @@ import {Category} from "../../../models/category.model";
 export class CategoriesListComponent {
   @Input() categories: Category[];
   @Input() withIcon: boolean = true;
+  @Input() rounded: boolean = false;
+  @Input() gap: string = '3';
 
   getCategorySeverity (category: Category) {
     switch (category.name) {

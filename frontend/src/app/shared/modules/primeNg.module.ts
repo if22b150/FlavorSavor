@@ -25,6 +25,7 @@ import {FileUploadModule} from "primeng/fileupload";
 import {MultiSelectModule} from "primeng/multiselect";
 import {ConfirmPopupModule} from "primeng/confirmpopup";
 import {TooltipModule} from "primeng/tooltip";
+import {AutoCompleteModule} from "primeng/autocomplete";
 
 
 @NgModule({
@@ -60,7 +61,8 @@ import {TooltipModule} from "primeng/tooltip";
     FileUploadModule,
     MultiSelectModule,
     ConfirmPopupModule,
-    TooltipModule
+    TooltipModule,
+    AutoCompleteModule
   ]
 })
 export class PrimeNgModule { }

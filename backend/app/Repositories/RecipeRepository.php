@@ -19,11 +19,11 @@ class RecipeRepository implements RecipeRepositoryInterface
         return Recipe::find($id);
     }
 
-    public function getWhere($column, $value, array $related = null)
+    public function getWhere($column, $value, array $related = null, string $operator = null)
     {
         if($related)
-            return Recipe::where($column, $value)->where([$related])->get();
-        return Recipe::where($column, $value)->get();
+            return Recipe::where($column, $operator ?? '=', $value)->where([$related])->get();
+        return Recipe::where($column, $operator ?? '=', $value)->get();
     }
 
     public function getFirstWhere($column, $value, array $related = null)

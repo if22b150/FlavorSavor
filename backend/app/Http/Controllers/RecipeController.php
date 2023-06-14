@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Services\RecipeService;
+use Illuminate\Http\Request;
 
 class RecipeController extends Controller
 {
@@ -13,9 +14,9 @@ class RecipeController extends Controller
         $this->recipeService = $recipeService;
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        return $this->recipeService->allVerified();
+        return $this->recipeService->allVerified($request->query('title'));
     }
 
     public function show(int $recipeId)

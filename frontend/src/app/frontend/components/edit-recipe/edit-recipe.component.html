@@ -1,9 +1,9 @@
 <div class="card flex justify-content-center">
-  <p-button  (click)="openDialog()" pRipple label="Rezept erstellen" icon="pi pi-plus"
-            styleClass="p-button-primary"></p-button>
+  <p-button  (click)="openDialog()" pRipple label="Rezept bearbeiten" icon="pi pi-pencil"
+             styleClass="p-button-secondary"></p-button>
 
-  <p-dialog header="Rezept erstellen" [(visible)]="visible" [modal]="true" [style]="{ width: '50vw' }" [draggable]="false" [resizable]="false" (onHide)="closeDialog()">
-    <form [formGroup]="createRecipeForm">
+  <p-dialog header="Rezept bearbeiten" [(visible)]="visible" [modal]="true" [style]="{ width: '50vw' }" [draggable]="false" [resizable]="false" (onHide)="closeDialog()">
+    <form [formGroup]="editRecipeForm">
 
       <div class="mb-4">
         <label for="title" class="block text-900 font-medium mb-2">Titel</label>
@@ -46,8 +46,8 @@
       <div class="mb-4">
         <label for="image" class="block text-900 font-medium mb-2">Bild</label>
         <p-fileUpload mode="basic" accept="image/*" chooseStyleClass="p-button-outlined"
-          [customUpload]="true" [maxFileSize]="2000000" (uploadHandler)="onImageUpload($event)"
-          [auto]="true" [chooseLabel]="image ? image.name : 'Auswählen'"></p-fileUpload>
+                      [customUpload]="true" [maxFileSize]="2000000" (uploadHandler)="onImageUpload($event)"
+                      [auto]="true" [chooseLabel]="image ? image.name : 'Auswählen'"></p-fileUpload>
 
         <div style="position: relative">
           <small style="position: absolute" *ngIf="!image && submitted">Ein Bild ist erforderlich</small>
@@ -57,7 +57,7 @@
       <div *ngIf="(ingredientService.ingredients$|async) as ingredientsArr">
         <label for="ingredients" class="block text-900 font-medium mb-2">Zutaten</label>
         <p-multiSelect inputId="ingredients" [options]="ingredientsArr" formControlName="selectedIngredients"
-          defaultLabel="Wähle Zutaten" optionLabel="name" display="chip" (onChange)="initIngredientsGroup($event)" class="w-full" styleClass="w-full" inputStyleClass="w-full"></p-multiSelect>
+                       defaultLabel="Wähle Zutaten" optionLabel="name" display="chip" (onChange)="initIngredientsGroup($event)" class="w-full" styleClass="w-full" inputStyleClass="w-full"></p-multiSelect>
 
         <div style="position: relative">
           <small style="position: absolute" *ngIf="selectedIngredients.hasError('required') && (ingredients.touched || submitted)">Zutaten sind erforderlich</small>
@@ -89,7 +89,7 @@
       </div>
 
       <div class="flex justify-content-end">
-        <p-button  (click)="submit()" pRipple label="Erstellen" [loading]="loading" icon="pi pi-save"
+        <p-button  (click)="submit()" pRipple label="Bearbeiten" [loading]="loading"
                    styleClass="p-button-primary"></p-button>
       </div>
 
