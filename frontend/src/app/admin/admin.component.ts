@@ -19,23 +19,23 @@ export class AdminComponent implements OnInit {
   ngOnInit(): void {
     this.items = [
       {
-        label: 'User',
-        icon: 'pi pi-fw pi-users',
+        label: 'Users',
+        // icon: 'pi pi-fw pi-users',
         routerLink: 'users',
       },
       {
         label: 'Rezepte',
-        icon: 'pi pi-fw pi-list',
+        // icon: 'pi pi-fw pi-list',
         routerLink: 'recipes'
       },
       {
         label: 'Zutaten',
-        icon: 'pi pi-fw pi-book',
+        // icon: 'pi pi-fw pi-book',
         routerLink: 'ingredients'
       },
       {
         label: 'Kategorien',
-        icon: 'pi pi-fw pi-user',
+        // icon: 'pi pi-fw pi-user',
         routerLink: 'categories'
       },
       {
