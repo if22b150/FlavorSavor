@@ -1,7 +1,5 @@
-import { Component } from '@angular/core';
-import {Recipe} from "../../../models/recipe.model";
+import {Component, OnInit} from '@angular/core';
 import {RecipeService} from "../../../services/recipe.service";
-import {Observable} from "rxjs";
 import {BreadcrumbService} from "../../../services/breadcrumb.service";
 
 @Component({
@@ -9,25 +7,14 @@ import {BreadcrumbService} from "../../../services/breadcrumb.service";
   templateUrl: './home-view.component.html',
   styleUrls: ['./home-view.component.scss']
 })
-export class HomeViewComponent {
-  search: any;
-  suggestionRecipes: Observable<Recipe[]>;
-
+export class HomeViewComponent implements OnInit{
   constructor(private recipeService: RecipeService,
               private breadcrumbService: BreadcrumbService) {
   }
 
-  filterCountry(event) {
-    this.suggestionRecipes = this.recipeService.getSearch(event.query);
-  }
-
-  getDashSeperatedTitle(recipe: Recipe) {
-    return '/recipes/' + recipe.title.replace(/([a-z])([A-Z])/g, "$1-$2")
-      .replace(/[\s_]+/g, '-')
-      .toLowerCase() + '-' + recipe.id;
-  }
-
-  navigateToRecipe() {
-    this.breadcrumbService.breadcrumb = {link: '/home', text: 'Home'};
+  ngOnInit(): void {
+    this.breadcrumbService.breadcrumb = null;
+    this.recipeService.filters = null;
+    this.recipeService.getAll();
   }
 }

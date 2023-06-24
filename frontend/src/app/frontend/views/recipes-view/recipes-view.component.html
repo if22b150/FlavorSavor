@@ -1,3 +1,6 @@
 <app-loading-spinner *ngIf="recipeService.loading$|async"></app-loading-spinner>
 
-<app-recipes-list *ngIf="!(recipeService.loading$|async)" [recipes]="(recipeService.recipes$|async).recipes"></app-recipes-list>
+<div *ngIf="!(recipeService.loading$|async)">
+  <app-filter-recipes></app-filter-recipes>
+  <app-recipes-list [recipes]="(recipeService.recipes$|async).recipes"></app-recipes-list>
+</div>

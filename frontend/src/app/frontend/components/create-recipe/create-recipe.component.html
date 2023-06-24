@@ -56,7 +56,7 @@
 
       <div *ngIf="(ingredientService.ingredients$|async) as ingredientsArr">
         <label for="ingredients" class="block text-900 font-medium mb-2">Zutaten</label>
-        <p-multiSelect inputId="ingredients" [options]="ingredientsArr" formControlName="selectedIngredients"
+        <p-multiSelect inputId="ingredients" [options]="ingredientsArr" formControlName="selectedIngredients" [showToggleAll]="false"
           defaultLabel="Wähle Zutaten" optionLabel="name" display="chip" (onChange)="initIngredientsGroup($event)" class="w-full" styleClass="w-full" inputStyleClass="w-full"></p-multiSelect>
 
         <div style="position: relative">
@@ -80,7 +80,7 @@
 
       <div class="mb-4" *ngIf="(categoryService.categories$|async) as categoriesArr">
         <label for="categories" class="block text-900 font-medium mb-2">Kategorien</label>
-        <p-multiSelect inputId="categories" [options]="categoriesArr" formControlName="categories"
+        <p-multiSelect inputId="categories" [options]="categoriesArr" formControlName="categories" [showToggleAll]="false"
                        defaultLabel="Wähle Kategorien" optionLabel="name" display="chip" class="w-full" styleClass="w-full" inputStyleClass="w-full"></p-multiSelect>
 
         <div style="position: relative">

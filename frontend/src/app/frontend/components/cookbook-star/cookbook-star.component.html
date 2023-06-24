@@ -1,2 +1,6 @@
-<i class="pi pi-star cursor-pointer" [class.pi-star]="!recipe.saved" [class.pi-star-fill]="recipe.saved" style="font-size: 1.3rem"
-   [pTooltip]="recipe.saved ? 'Aus Kochbuch entfernen' : 'Zu Kochbuch hinzufügen'" tooltipPosition="right" (click)="recipe.saved ? removeFromCookbook(recipe) : addToCookbook(recipe)"></i>
+<i *ngIf="!loading" class="pi pi-star cursor-pointer" [class.pi-star]="!recipe.saved" [class.pi-star-fill]="recipe.saved"
+   style="font-size: 1.3rem" [pTooltip]="recipe.saved ? 'Aus Kochbuch entfernen' : 'Zu Kochbuch hinzufügen'"
+   tooltipPosition="right" (click)="recipe.saved ? removeFromCookbook(recipe) : addToCookbook(recipe)"></i>
+<div *ngIf="loading" style="height: 1.3rem">
+  <p-progressSpinner styleClass="spinnerSmall"></p-progressSpinner>
+</div>

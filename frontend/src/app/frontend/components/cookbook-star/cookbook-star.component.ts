@@ -3,6 +3,7 @@ import {Recipe} from "../../../models/recipe.model";
 import {RecipeService} from "../../../services/recipe.service";
 import {CookbookService} from "../../../services/cookbook.service";
 import {MessageService} from "primeng/api";
+import {finalize} from "rxjs";
 
 @Component({
   selector: 'app-cookbook-star',
@@ -11,6 +12,7 @@ import {MessageService} from "primeng/api";
 })
 export class CookbookStarComponent {
   @Input() recipe: Recipe;
+  loading: boolean;
 
   constructor(public recipeService: RecipeService,
               private cookbookService: CookbookService,
@@ -19,12 +21,15 @@ export class CookbookStarComponent {
   }
 
   removeFromCookbook(recipe: Recipe) {
+    this.loading = true;
     this.cookbookService.remove(recipe.id)
+      .pipe(finalize(() => this.loading = false))
       .subscribe({
         next: () => {
           this.messageService.add({ severity: 'success', summary: 'Erfolgreich', detail: 'Das Rezept wurde aus deinem Kochbuch entfernt.' });
           this.cookbookService.getAll();
-          this.recipeService.getAll();
+          this.recipeService.getAllFiltered(true);
+          this.recipeService.setRecipeSaved(recipe.id, false);
         },
         error: (err) => {
           console.log(err);
@@ -34,12 +39,15 @@ export class CookbookStarComponent {
   }
 
   addToCookbook(recipe: Recipe) {
+    this.loading = true;
     this.cookbookService.add(recipe.id)
+      .pipe(finalize(() => this.loading = false))
       .subscribe({
-        next: () => {
+        next: (r) => {
           this.messageService.add({ severity: 'success', summary: 'Erfolgreich', detail: 'Das Rezept wurde deinem Kochbuch hinzugefügt.' });
           this.cookbookService.getAll();
-          this.recipeService.getAll();
+          this.recipeService.getAllFiltered(true);
+          this.recipeService.setRecipeSaved(recipe.id, true);
         },
         error: (err) => {
           console.log(err);

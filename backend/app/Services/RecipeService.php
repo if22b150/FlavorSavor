@@ -2,32 +2,32 @@
 
 namespace App\Services;
 
-use App\Http\Controllers\Customer\RecipeController;
-use App\Http\Resources\IngredientResource;
 use App\Http\Resources\RecipeResource;
 use App\Models\Recipe;
+use App\Repositories\Interfaces\CategoryRepositoryInterface;
 use App\Repositories\Interfaces\IngredientRepositoryInterface;
 use App\Repositories\Interfaces\RecipeIngredientRepositoryInterface;
 use App\Repositories\Interfaces\RecipeRepositoryInterface;
 use App\Repositories\Interfaces\UserRepositoryInterface;
-use App\Repositories\RecipeIngredientRepository;
-use App\Repositories\RecipeRepository;
 use Exception;
 use Illuminate\Database\Eloquent\Collection;
 
 class RecipeService
 {
     protected IngredientRepositoryInterface $ingredientRepository;
+    protected CategoryRepositoryInterface $categoryRepository;
     protected RecipeIngredientRepositoryInterface $recipeIngredientRepository;
     protected RecipeRepositoryInterface $recipeRepository;
     protected UserRepositoryInterface $userRepository;
 
     public function __construct(IngredientRepositoryInterface   $ingredientRepository,
+                                CategoryRepositoryInterface $categoryRepository,
                                 RecipeRepositoryInterface                $recipeRepository,
                                 RecipeIngredientRepositoryInterface      $recipeIngredientRepository,
                                 UserRepositoryInterface $userRepository)
     {
         $this->ingredientRepository = $ingredientRepository;
+        $this->categoryRepository = $categoryRepository;
         $this->recipeRepository = $recipeRepository;
         $this->recipeIngredientRepository = $recipeIngredientRepository;
         $this->userRepository = $userRepository;
@@ -38,11 +38,42 @@ class RecipeService
         return RecipeResource::collection($this->recipeRepository->all());
     }
 
-    public function allVerified(?string $title)
+    public function allVerified(?string $title, ?string $ingredients, ?string $categories)
     {
         $recipes = new Collection();
-        $allRecipes = $title ? $this->recipeRepository->getWhere('title', '%' . $title . '%', null, 'like') : $this->recipeRepository->all();
-        foreach ($allRecipes as $recipe) {
+        $filtered = $title ? $this->recipeRepository->getWhere('title', '%' . $title . '%', null, 'like') : $this->recipeRepository->all();
+
+        if($ingredients) {
+            $ingredients = explode(',', $ingredients);
+            foreach ($ingredients as $ingredientId) {
+                $ingredient = $this->ingredientRepository->get($ingredientId);
+                if(!$ingredient)
+                    continue;
+
+                $filtered = $filtered->filter(function ($recipe) use ($ingredient) {
+                    return $recipe->ingredients
+                        ->pluck('id')
+                        ->containsStrict($ingredient->id);
+                });
+            }
+        }
+
+        if($categories) {
+            $categories = explode(',', $categories);
+            foreach ($categories as $categoryId) {
+                $category = $this->categoryRepository->get($categoryId);
+                if(!$category)
+                    continue;
+
+                $filtered = $filtered->filter(function ($recipe) use ($category) {
+                    return $recipe->categories
+                        ->pluck('id')
+                        ->containsStrict($category->id);
+                });
+            }
+        }
+
+        foreach ($filtered as $recipe) {
             if($recipe->user->email_verified_at)
                 $recipes->push($recipe);
         }

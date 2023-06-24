@@ -6,6 +6,7 @@ import {BreadcrumbService} from "../services/breadcrumb.service";
 import {IngredientService} from "../services/ingredient.service";
 import {CategoryService} from "../services/category.service";
 import {RecipeService} from "../services/recipe.service";
+import {NavigationEnd, Router, Scroll} from "@angular/router";
 
 @Component({
   selector: 'app-frontend',
@@ -14,20 +15,31 @@ import {RecipeService} from "../services/recipe.service";
 })
 export class FrontendComponent implements OnInit {
   items: MenuItem[];
+  isHome: boolean = true;
 
   constructor(private authService: AuthService,
               public breadcrumbService: BreadcrumbService,
               private ingredientService: IngredientService,
               private categoryService: CategoryService,
-              private recipeService: RecipeService) { }
+              private recipeService: RecipeService,
+              private router: Router) { }
 
   ngOnInit(): void {
+    this.router.events.subscribe(u => {
+      if(u instanceof NavigationEnd) {
+        this.isHome = u.url == '/home';
+      }
+      if(u instanceof Scroll) {
+        this.isHome = u.routerEvent.url == '/home';
+      }
+    })
+
     if(!this.ingredientService.ingredients || this.ingredientService.ingredients.length == 0)
       this.ingredientService.getAll();
     if(!this.categoryService.categories || this.categoryService.categories.length == 0)
       this.categoryService.getAll();
     if(!this.recipeService.recipes || this.recipeService.recipes.recipes.length == 0)
-      this.recipeService.getAll();
+      this.recipeService.getAllFiltered();
 
     this.authService.user$.subscribe({
       next: (user: User) => {

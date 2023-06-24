@@ -17,8 +17,8 @@ export class RecipesViewComponent implements OnInit {
   ngOnInit(): void {
     this.breadcrumbService.breadcrumb = null;
 
-    if(!this.recipeService.recipes || this.recipeService.recipes.recipes.length == 0 || this.recipeService.recipes.type != 'all')
-      this.recipeService.getAll();
+    if(!this.recipeService.recipes || this.recipeService.recipes.recipes.length == 0 || this.recipeService.recipes.type == 'customer')
+      this.recipeService.getAllFiltered();
   }
 
 }

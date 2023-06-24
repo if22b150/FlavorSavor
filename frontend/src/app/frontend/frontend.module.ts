@@ -18,6 +18,7 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import { CookbookStarComponent } from './components/cookbook-star/cookbook-star.component';
 import { EditRecipeComponent } from './components/edit-recipe/edit-recipe.component';
 import { HomeViewComponent } from './views/home-view/home-view.component';
+import { FilterRecipesComponent } from './components/filter-recipes/filter-recipes.component';
 
 
 
@@ -36,7 +37,8 @@ import { HomeViewComponent } from './views/home-view/home-view.component';
     CreateRecipeComponent,
     CookbookStarComponent,
     EditRecipeComponent,
-    HomeViewComponent
+    HomeViewComponent,
+    FilterRecipesComponent
   ],
   imports: [
     CommonModule,

@@ -16,7 +16,11 @@ class RecipeController extends Controller
 
     public function index(Request $request)
     {
-        return $this->recipeService->allVerified($request->query('title'));
+        return $this->recipeService->allVerified(
+            $request->query('title'),
+            $request->query('ingredients'),
+            $request->query('categories')
+        );
     }
 
     public function show(int $recipeId)

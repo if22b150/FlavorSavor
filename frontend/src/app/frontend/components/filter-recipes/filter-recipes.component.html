@@ -1,0 +1,99 @@
+<ng-container *ngIf="isHome; else filterContainer">
+  <form [formGroup]="searchForm">
+    <div class="flex flex-column align-items-center mb-3">
+      <label for="title" class="block text-white text-center font-medium mb-2">Name</label>
+      <p-autoComplete placeholder="Name des Rezepts" formControlName="title" inputId="title" [suggestions]="suggestionRecipes|async"
+                      (completeMethod)="filterRecipes($event)" field="title" [minLength]="3" [showClear]="true">
+        <ng-template let-recipe pTemplate="item">
+          <div *ngIf="recipe.id != -1" class="flex align-items-center justify-content-between gap-6">
+            <div class="flex align-items-center gap-2" pTooltip='{{"\""+recipe.title+"\" Übernehmen"}}' tooltipPosition="bottom">
+              <img [src]="recipe.imagePath" style="width: 30px"/>
+              <div>{{ recipe.title }}</div>
+              <app-categories-list [categories]="recipe.categories" [withIcon]="false" [gap]="'1'" [rounded]="true"></app-categories-list>
+            </div>
+            <a [routerLink]="getDashSeperatedTitle(recipe)" (click)="navigateToRecipe()">
+              <p-button pRipple label="Direkt zum Rezept" icon="pi pi-arrow-circle-right" iconPos="right"
+                        styleClass="p-button-secondary p-button-outlined p-button-sm p-button-rounded"></p-button>
+            </a>
+          </div>
+          <div *ngIf="recipe.id == -1">
+            "{{recipe.title}}" übernehmen
+          </div>
+        </ng-template>
+      </p-autoComplete>
+    </div>
+
+    <div class="flex flex-column md:flex-row gap-4 justify-content-center">
+
+      <div *ngIf="(ingredientService.ingredients$|async) as ingredientsArr">
+        <label for="ingredients" class="block text-white text-center font-medium mb-2">Zutaten</label>
+        <p-multiSelect inputId="ingredients" [options]="ingredientsArr" formControlName="ingredients"
+                       defaultLabel="Wähle Zutaten" optionLabel="name" display="chip" [showToggleAll]="false"
+                       class="w-full" styleClass="w-full" inputStyleClass="w-full"></p-multiSelect>
+      </div>
+
+      <div *ngIf="(categoryService.categories$|async) as categoriesArr">
+        <label for="categories" class="block text-white text-center font-medium mb-2">Kategorien</label>
+        <p-multiSelect inputId="categories" [options]="categoriesArr" formControlName="categories"
+                       defaultLabel="Wähle Kategorien" optionLabel="name" display="chip" [showToggleAll]="false"
+                       class="w-full" styleClass="w-full" inputStyleClass="w-full"></p-multiSelect>
+      </div>
+
+    </div>
+
+    <div class="flex justify-content-center mt-6">
+      <p-button  (click)="submit()" pRipple label="Jetzt Suchen" icon="pi pi-search" iconPos="right"
+                 styleClass="p-button-primary p-button-lg" [loading]="loading"></p-button>
+    </div>
+  </form>
+</ng-container>
+
+
+<ng-template #filterContainer>
+  <div class="pb-1">
+    <h4 class="m-0 mb-2">Rezepte filtern</h4>
+    <form [formGroup]="searchForm">
+      <div class="flex flex-wrap gap-4 align-items-center">
+
+        <p-autoComplete placeholder="Name des Rezepts" formControlName="title" inputId="title" [suggestions]="suggestionRecipes|async"
+                        (completeMethod)="filterRecipes($event)" field="title" [minLength]="3" [showClear]="true">
+          <ng-template let-recipe pTemplate="item">
+            <div *ngIf="recipe.id != -1; else searchText" class="flex align-items-center justify-content-between gap-6">
+              <div class="flex align-items-center gap-2" pTooltip='{{"\""+recipe.title+"\" Übernehmen"}}' tooltipPosition="bottom">
+                <img [src]="recipe.imagePath" style="width: 30px"/>
+                <div>{{ recipe.title }}</div>
+                <app-categories-list [categories]="recipe.categories" [withIcon]="false" [gap]="'1'" [rounded]="true"></app-categories-list>
+              </div>
+              <a [routerLink]="getDashSeperatedTitle(recipe)" (click)="navigateToRecipe()">
+                <p-button pRipple label="Direkt zum Rezept" icon="pi pi-arrow-circle-right" iconPos="right"
+                          styleClass="p-button-secondary p-button-outlined p-button-sm p-button-rounded"></p-button>
+              </a>
+            </div>
+            <ng-template #searchText>
+              "{{recipe.title}}" übernehmen
+            </ng-template>
+          </ng-template>
+        </p-autoComplete>
+
+        <div *ngIf="(ingredientService.ingredients$|async) as ingredientsArr">
+          <p-multiSelect inputId="ingredients" [options]="ingredientsArr" formControlName="ingredients"
+                         defaultLabel="Wähle Zutaten" optionLabel="name" display="chip" [showToggleAll]="false"
+                         class="w-full" styleClass="w-full" inputStyleClass="w-full"></p-multiSelect>
+        </div>
+
+        <div *ngIf="(categoryService.categories$|async) as categoriesArr">
+          <p-multiSelect inputId="categories" [options]="categoriesArr" formControlName="categories"
+                         defaultLabel="Wähle Kategorien" optionLabel="name" display="chip" [showToggleAll]="false"
+                         class="w-full" styleClass="w-full" inputStyleClass="w-full"></p-multiSelect>
+        </div>
+
+        <p-button  (click)="submit()" pRipple label="Filtern" styleClass="p-button-primary p-button-outlined"
+                   [loading]="loading" icon="pi pi-search"></p-button>
+
+        <p-button  *ngIf="hasFilters" (click)="recipeService.filters = null; recipeService.getAllFiltered()" pRipple label="Alle löschen" styleClass="p-button-danger p-button-outlined"
+                   [loading]="loading" icon="pi pi-times"></p-button>
+
+      </div>
+    </form>
+  </div>
+</ng-template>

@@ -3,6 +3,7 @@ import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {BehaviorSubject, finalize, Observable} from "rxjs";
 import {Recipe} from "../models/recipe.model";
 import {environment} from "../../environments/environment";
+import {RecipeFilter} from "../models/recipe-filter.model";
 
 @Injectable({
   providedIn: 'root'
@@ -27,19 +28,61 @@ export class RecipeService {
     return this._loading.asObservable();
   }
 
-  constructor(private http: HttpClient) {
-    let savedRecipes = JSON.parse(sessionStorage.getItem('recipes'));
-    this._recipes = new BehaviorSubject<{recipes: Recipe[], type: string}>(savedRecipes);
-    this._loading = new BehaviorSubject<boolean>(false);
+  private _filters: BehaviorSubject<RecipeFilter>;
+  public get filters$(): Observable<RecipeFilter> {
+    return this._filters.asObservable();
+  }
+  public get filters(): RecipeFilter {
+    return this._filters.value;
+  }
+  public set filters(filters: RecipeFilter) {
+    sessionStorage.setItem('filters', JSON.stringify(filters));
+    this._filters.next(filters);
   }
 
-  public getAll() {
+  setRecipeSaved(id: number, saved: boolean) {
+    let recipes = this._recipes.value.recipes;
+    recipes.forEach(r => {
+      if(r.id == id)
+        r.saved = saved;
+    })
+    this.recipes = {recipes: recipes, type: this._recipes.value.type};
+  }
+
+  constructor(private http: HttpClient) {
+    let savedRecipes = JSON.parse(sessionStorage.getItem('recipes'));
+    let savedFilters = JSON.parse(sessionStorage.getItem('filters'));
+    this._recipes = new BehaviorSubject<{recipes: Recipe[], type: string}>(savedRecipes);
+    this._loading = new BehaviorSubject<boolean>(false);
+    this._filters = new BehaviorSubject<RecipeFilter>(savedFilters);
+  }
+
+  public getAll(shadowLoad: boolean = false) {
+    if(!shadowLoad)
+      this._loading.next(true);
     this._loading.next(true);
     this.http.get<Recipe[]>(environment.apiUrl + 'recipes')
       .pipe(finalize(() => this._loading.next(false)))
       .subscribe({
         next: (recipes) => {
           this.recipes = {recipes: recipes, type: 'all'};
+        }
+      });
+  }
+
+  public getAllFiltered(shadowLoad: boolean = false) {
+    if(!shadowLoad)
+      this._loading.next(true);
+    let title = this.filters ? (this.filters.title ?? '') : '';
+    let ingredientIds = this.filters ? (this.filters.ingredients ? this.filters.ingredients.map(i => i.id).join() : []) : [];
+    let categoryIds = this.filters ? (this.filters.categories ? this.filters.categories.map(i => i.id).join() : []) : [];
+
+    this.http.get<Recipe[]>(environment.apiUrl + 'recipes',
+      {params: {title: title, ingredients: ingredientIds, categories: categoryIds}})
+      .pipe(finalize(() => this._loading.next(false)))
+      .subscribe({
+        next: (recipes) => {
+          this.recipes = {recipes: recipes, type: 'filtered'};
         }
       });
   }

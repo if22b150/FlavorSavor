@@ -11,7 +11,10 @@
   <p-button *ngIf="(breadcrumbService.breadcrumb$|async) as breadcrumb" pRipple label="Zurück" icon="pi pi-angle-left"
             styleClass="p-button-outlined p-button-secondary mb-3" [routerLink]="[breadcrumb.link]"></p-button>
 
-  <div class="surface-card sm:px-5 sm:py-4 p-3 shadow-2 border-round">
+  <div *ngIf="!isHome" class="surface-card sm:px-5 sm:py-4 p-3 shadow-2 border-round">
+    <router-outlet></router-outlet>
+  </div>
+  <div *ngIf="isHome" class="border-round shadow-5">
     <router-outlet></router-outlet>
   </div>
 </div>

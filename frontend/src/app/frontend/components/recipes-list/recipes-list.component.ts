@@ -24,13 +24,15 @@ export class RecipesListComponent implements OnInit {
   constructor(public recipeService: RecipeService,
               private router: Router,
               private breadcrumbService: BreadcrumbService,
-              public authService: AuthService,
-              private cookbookService: CookbookService,
-              private messageService: MessageService) {
+              public authService: AuthService) {
 
   }
 
   ngOnInit() {
+  }
+
+  isMyRecipe(id: number) {
+    return this.authService.user.id == id;
   }
 
   navigateToRecipe(recipe: Recipe) {
