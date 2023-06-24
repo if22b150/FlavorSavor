@@ -37,6 +37,8 @@ Route::prefix('admin')->name('admin.')->middleware(['auth:sanctum', 'verified', 
     Route::apiResource('ingredients', \App\Http\Controllers\Admin\IngredientController::class);
 
     Route::apiResource('categories', \App\Http\Controllers\Admin\CategoryController::class);
+
+    Route::apiResource('users', \App\Http\Controllers\Admin\UserController::class)->only(['index', 'destroy']);
 });
 
 //////////////

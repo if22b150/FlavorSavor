@@ -55,7 +55,7 @@ class UserRepository implements UserRepositoryInterface
 
     public function deleteWhere($column, $value)
     {
-        // TODO: Implement deleteWhere() method.
+        return User::where($column, $value)->delete();
     }
 
     public function exists(int $id): bool

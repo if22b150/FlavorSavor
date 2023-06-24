@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {AbstractControl, FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {AuthService} from "../../../services/auth/auth.service";
 import {finalize} from "rxjs";
-import {MessageService} from "primeng/api";
+import {Message, MessageService} from "primeng/api";
 import {ActivatedRoute, Router} from "@angular/router";
-import { Message } from 'primeng/api';
+import {ERole} from "../../../models/user.model";
 
 @Component({
   selector: 'app-login-view',
@@ -54,15 +54,16 @@ export class LoginViewComponent implements OnInit {
       .subscribe(
         {
           next: (user) => {
-            if(user.verified)
-              this.router.navigate(['']).then(() => {
-                  this.messageService.add({
-                    severity: 'success',
-                    summary: 'Erfolgreich',
-                    detail: 'Der Login war erfolgreich.'
-                  });
+            if(user.verified) {
+              let route = user.role == ERole.ADMIN ? '/admin' : ''
+              this.router.navigate([route]).then(() => {
+                this.messageService.add({
+                  severity: 'success',
+                  summary: 'Erfolgreich',
+                  detail: 'Der Login war erfolgreich.'
+                });
               });
-            else {
+            } else {
               this.newVerifyEmail = true;
               this.messageService.add({
                 severity: 'error',

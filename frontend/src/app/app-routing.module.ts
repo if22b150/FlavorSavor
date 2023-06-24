@@ -2,11 +2,13 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import {AdminGuard} from "./guards/admin.guard";
 import {AuthGuard} from "./guards/auth.guard";
+import {PublicGuard} from "./guards/public.guard";
 
 const routes: Routes = [
   {
     path: '',
-    loadChildren: () => import('./frontend/frontend.module').then(m => m.FrontendModule)
+    loadChildren: () => import('./frontend/frontend.module').then(m => m.FrontendModule),
+    canActivate: [PublicGuard]
   },
   {
     path: 'auth',

@@ -62,7 +62,8 @@ import {AutoCompleteModule} from "primeng/autocomplete";
     MultiSelectModule,
     ConfirmPopupModule,
     TooltipModule,
-    AutoCompleteModule
+    AutoCompleteModule,
+    TableModule
   ]
 })
 export class PrimeNgModule { }

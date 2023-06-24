@@ -114,6 +114,16 @@ class UserService
         return response('', 204);
     }
 
+    public function getAllCustomers()
+    {
+        return UserResource::collection($this->userRepository->getWhere('role', 'customer'));
+    }
+
+    public function delete(int $id)
+    {
+        $this->userRepository->deleteWhere('id', $id);
+        return response('', 204);
+    }
 //
 //    public function verifyEmail(array $data)
 //    {
