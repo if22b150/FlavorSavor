@@ -1,0 +1,26 @@
+<div class="flex align-items-center flex-wrap gap-4 mb-4">
+  <h1 class="m-0">Kategorien</h1>
+  <app-create-category></app-create-category>
+</div>
+<app-loading-spinner-admin *ngIf="(categoryService.loading$|async)"></app-loading-spinner-admin>
+<div class="card" *ngIf="!(categoryService.loading$|async) && (categoryService.categories$|async)">
+  <p-table [value]="(categoryService.categories$|async)" [tableStyle]="{'min-width': '60rem'}">
+    <ng-template pTemplate="header">
+      <tr>
+        <th pSortableColumn="id" style="width:20%">Id <p-sortIcon field="id"></p-sortIcon></th>
+        <th pSortableColumn="name" style="width:20%">Name <p-sortIcon field="name"></p-sortIcon></th>
+        <th>Aktionen</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-category>
+      <tr>
+        <td>{{category.id}}</td>
+        <td>{{category.name}}</td>
+        <td>
+          <app-category-delete [category]="category"></app-category-delete>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+
+</div>

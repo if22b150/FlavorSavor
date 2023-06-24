@@ -7,6 +7,7 @@
         <th pSortableColumn="id" style="width:20%">Id <p-sortIcon field="id"></p-sortIcon></th>
         <th pSortableColumn="email" style="width:20%">Email <p-sortIcon field="email"></p-sortIcon></th>
         <th pSortableColumn="username" style="width:20%">Username <p-sortIcon field="username"></p-sortIcon></th>
+        <th pSortableColumn="verified" style="width:20%">Verifiziert <p-sortIcon field="verfified"></p-sortIcon></th>
         <th>Aktionen</th>
       </tr>
     </ng-template>
@@ -15,6 +16,7 @@
         <td>{{customer.id}}</td>
         <td>{{customer.email}}</td>
         <td>{{customer.username}}</td>
+        <td>{{customer.verified ? 'Ja' : 'Nein'}}</td>
         <td>
           <app-user-delete [user]="customer"></app-user-delete>
         </td>

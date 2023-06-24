@@ -2,28 +2,30 @@ import {Component, Input, OnInit} from '@angular/core';
 import {UserService} from "../../../../services/admin/user.service";
 import {User} from "../../../../models/user.model";
 import {finalize} from "rxjs";
+import {RecipeService} from "../../../../services/admin/recipe.service";
+import {Recipe} from "../../../../models/recipe.model";
 
 @Component({
-  selector: 'app-user-delete',
+  selector: 'app-recipe-delete',
   template: `
     <p-button icon="pi pi-trash" styleClass="p-button-danger" [loading]="loading" (click)="delete()"></p-button>
   `,
   styles: []
 })
-export class DeleteUserComponent {
-  @Input() user: User;
+export class DeleteRecipeComponent {
+  @Input() recipe: Recipe;
   loading: boolean;
 
-  constructor(private userService: UserService) {
+  constructor(private recipeService: RecipeService) {
   }
 
   delete() {
     this.loading = true;
-    this.userService.delete(this.user.id)
+    this.recipeService.delete(this.recipe.id)
       .pipe(finalize(() => this.loading = false))
       .subscribe({
         next: () => {
-          this.userService.getAll();
+          this.recipeService.getAll();
         }
       })
   }

@@ -21,22 +21,22 @@ export class AdminComponent implements OnInit {
       {
         label: 'User',
         icon: 'pi pi-fw pi-users',
-        routerLink: '/users',
+        routerLink: 'users',
       },
       {
         label: 'Rezepte',
         icon: 'pi pi-fw pi-list',
-        routerLink: '/recipes'
+        routerLink: 'recipes'
       },
       {
         label: 'Zutaten',
         icon: 'pi pi-fw pi-book',
-        routerLink: '/ingredients'
+        routerLink: 'ingredients'
       },
       {
         label: 'Kategorien',
         icon: 'pi pi-fw pi-user',
-        routerLink: '/categories'
+        routerLink: 'categories'
       },
       {
         label: 'Logout',
