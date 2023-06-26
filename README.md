@@ -12,6 +12,7 @@ CREATE DATABASE flavorsavor;
 #### Laravel Environment
 Im "backend"-Ordner:
 - .env.example kopieren und zu .env umbenennen, falls noch nicht vorhanden
+- Bei APP_URL "http://localhost:8000" eintragen
 - Bei DB_DATABASE "flavorsavor" eintragen (oder wie die DB oben eben genannt wurde)
 - Evtl. die Credentials für MySQL bei DB_USERNAME (default "root") und DB_PASSWORD (normalerweise nichts) eintragen
 - Bei MAIL_USERNAME die eigene FH Mail-Adresse eintragen und bei MAIL_PASSWORD das dazugehörige Passwort
