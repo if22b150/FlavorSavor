@@ -23,5 +23,14 @@ class InitialUserSeeder extends Seeder
         ]);
         $user->markEmailAsVerified();
         $user->save();
+
+        $user = new User([
+            'username' => 'Chefkoch',
+            'email' => 'if22b151@technikum-wien.at',
+            'password' => Hash::make('123456'),
+            'role' => ERole::CUSTOMER,
+        ]);
+        $user->markEmailAsVerified();
+        $user->save();
     }
 }
