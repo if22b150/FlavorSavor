@@ -9,4 +9,5 @@ Route::patch('email', [UserController::class, 'checkEmail']);
 Route::get('email/verify/{id}/{hash}', [UserController::class, 'verifyEmail'])->name('verification.verify');
 Route::post('resend-verification-email', [UserController::class, 'resendVerificationEmail'])->middleware(['auth:sanctum']);;
 Route::post('login', [UserController::class, 'login']);
-Route::post('logout', [UserController::class, 'logout'])->middleware(['auth:sanctum']);
+Route::post('logout', [UserController::class, 'logout']);
+//    ->middleware(['auth:sanctum']);

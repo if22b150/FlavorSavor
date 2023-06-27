@@ -85,7 +85,8 @@ class UserService
 
     public function logout(mixed $user)
     {
-        $user->currentAccessToken()->delete();
+        if($user)
+            $user->currentAccessToken()->delete();
 
         return response()->json(['message' => 'Logged out']);
     }
